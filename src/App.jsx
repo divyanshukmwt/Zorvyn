@@ -1,15 +1,13 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import Badge from "./components/ui/Badge";
+import Toast from "./components/ui/Toast";
+import ExportMenu from "./components/ui/ExportMenu";
 
-function App() {
-
+export default function App() {
   return (
-    <h1 className="text-red-500 text-3xl">
-  Tailwind Working 🚀
-</h1>
-  )
+    <div className="p-5 space-y-4">
+      <Badge text="Income" />
+      <ExportMenu />
+      <Toast />
+    </div>
+  );
 }
-
-export default App
