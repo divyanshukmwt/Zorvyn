@@ -1,9 +1,3 @@
-/**
- * @typedef {{ color: string, emoji: string }} CategoryMeta
- * @typedef {{ id: number, date: string, desc: string, amount: number, type: 'income'|'expense', category: string }} Transaction
- */
-
-/** @type {Record<string, CategoryMeta>} */
 export const CATEGORIES = {
   Food:          { color: '#F97316', emoji: '🍔' },
   Transport:     { color: '#3B82F6', emoji: '🚗' },
@@ -18,7 +12,6 @@ export const CATEGORIES = {
 
 export const CATEGORY_NAMES = Object.keys(CATEGORIES);
 
-/** @type {Transaction[]} */
 export const SEED_TRANSACTIONS = [
   { id: 1,  date: '2026-04-01', desc: 'April Salary',                    amount: 85000, type: 'income',  category: 'Salary' },
   { id: 2,  date: '2026-03-31', desc: 'Grocery Run — BigBasket',         amount: 2840,  type: 'expense', category: 'Food' },
