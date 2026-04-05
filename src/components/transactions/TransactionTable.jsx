@@ -6,7 +6,7 @@ import useDebounce from '../../hooks/useDebounce';
 import TransactionFilters from './TransactionFilters';
 import TransactionRow from './TransactionRow';
 import EmptyState from '../ui/EmptyState';
-import { COLORS } from '../../constants/colors';
+import { COLORS } from '../../constants/color';
 
 function TransactionTable() {
   const transactions = useStore((s) => s.transactions);

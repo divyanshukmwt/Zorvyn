@@ -4,10 +4,10 @@ import { gsap } from 'gsap';
 import useStore from '../../store/useStore';
 import { CATEGORIES } from '../../data/mockData';
 import { formatCurrency, formatDate } from '../../utils/formatters';
-import { COLORS } from '../../constants/colors';
+import { COLORS } from '../../constants/color';
 
 function TransactionRow({ transaction }) {
-  const ref = useRef(null);
+  const ref              = useRef(null);
   const role             = useStore((s) => s.role);
   const deleteTransaction = useStore((s) => s.deleteTransaction);
   const addToast         = useStore((s) => s.addToast);
@@ -50,25 +50,25 @@ function TransactionRow({ transaction }) {
       ref={ref}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="flex items-center gap-3 sm:gap-4 p-3.5 rounded-xl transition-colors duration-200 bg-card border border-border-subtle"
+      className="flex items-center gap-2 sm:gap-4 p-2.5 sm:p-3.5 rounded-xl transition-colors duration-200 bg-card border border-border-subtle"
     >
       <div
-        className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+        className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0"
         style={{ background: `${catMeta.color}18` }}
       >
-        <Icon size={18} strokeWidth={1.5} style={{ color: catMeta.color }} />
+        <Icon size={15} strokeWidth={1.5} style={{ color: catMeta.color }} />
       </div>
 
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold truncate text-text-primary">
+        <p className="text-xs sm:text-sm font-semibold truncate text-text-primary">
           {transaction.desc}
         </p>
-        <div className="flex items-center gap-2 mt-0.5">
-          <span className="text-[11px] text-text-muted">
+        <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+          <span className="text-[10px] sm:text-[11px] text-text-muted">
             {formatDate(transaction.date, 'short')}
           </span>
           <span
-            className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
+            className="text-[9px] sm:text-[10px] font-semibold px-1.5 py-0.5 rounded-full"
             style={{ background: `${catMeta.color}18`, color: catMeta.color }}
           >
             {transaction.category}
@@ -77,7 +77,7 @@ function TransactionRow({ transaction }) {
       </div>
 
       <span
-        className="font-mono text-sm font-bold flex-shrink-0"
+        className="font-mono text-xs sm:text-sm font-bold flex-shrink-0"
         style={{ color: isIncome ? COLORS.success : COLORS.danger }}
       >
         {isIncome ? '+' : '−'}
@@ -88,10 +88,10 @@ function TransactionRow({ transaction }) {
         <button
           onClick={handleDelete}
           aria-label="Delete transaction"
-          className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0"
+          className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0"
           style={{ background: `${COLORS.danger}15`, color: COLORS.danger }}
         >
-          <Trash2 size={13} strokeWidth={2} />
+          <Trash2 size={12} strokeWidth={2} />
         </button>
       )}
     </div>

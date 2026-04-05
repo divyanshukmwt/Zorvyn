@@ -14,7 +14,7 @@ import {
 } from '../../utils/calculations';
 import { formatCurrency } from '../../utils/formatters';
 import EmptyState from '../ui/EmptyState';
-import { COLORS } from '../../constants/colors';
+import { COLORS } from '../../constants/color';
 
 const Primary   = COLORS.primary;
 const Secondary = COLORS.secondary;
@@ -107,7 +107,6 @@ function AnalyticsPage() {
         />
       </div>
 
-      {/* Monthly bar chart */}
       <div className="rounded-card p-6 bg-card border border-border-subtle">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -139,7 +138,6 @@ function AnalyticsPage() {
       </div>
 
       <div className="space-y-6">
-        {/* Pie chart + legend */}
         <div className="rounded-card p-6 bg-card border border-border-subtle">
           <h2 className="text-sm font-semibold mb-4 text-text-primary">Spending by Category</h2>
 
@@ -231,7 +229,6 @@ function AnalyticsPage() {
           </div>
         </div>
 
-        {/* Savings trend */}
         <div className="rounded-card p-6 bg-card border border-border-subtle">
           <h2 className="text-sm font-semibold mb-1 text-text-primary">Savings Trend</h2>
 

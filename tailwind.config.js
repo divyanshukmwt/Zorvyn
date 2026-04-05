@@ -1,4 +1,4 @@
-import { COLORS } from './src/constants/colors.js';
+import { COLORS } from './src/constants/color.js';
 
 export default {
   content: ['./index.html', './src/**/*.{js,jsx}'],

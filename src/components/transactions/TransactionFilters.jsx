@@ -3,7 +3,7 @@ import { Search, X, ChevronDown } from 'lucide-react';
 import { gsap } from 'gsap';
 import useStore from '../../store/useStore';
 import { CATEGORY_NAMES } from '../../data/mockData';
-import { COLORS } from '../../constants/colors';
+import { COLORS } from '../../constants/color';
 
 function CustomDropdown({ value, onChange, options, placeholder }) {
   const [open, setOpen] = useState(false);

@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 import { X, ChevronDown } from 'lucide-react';
 import useStore from '../../store/useStore';
 import { CATEGORY_NAMES } from '../../data/mockData';
-import { COLORS } from '../../constants/colors';
+import { COLORS } from '../../constants/color';
 
 const INITIAL_FORM = {
   desc: '',
@@ -87,14 +87,14 @@ function CategoryDropdown({ value, onChange }) {
 }
 
 function AddTransactionModal({ onClose }) {
-  const [form, setForm]             = useState(INITIAL_FORM);
-  const [errors, setErrors]         = useState({});
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
-  const modalRef    = useRef(null);
+  const modalRef = useRef(null);
   const backdropRef = useRef(null);
   const addTransaction = useStore((s) => s.addTransaction);
-  const addToast       = useStore((s) => s.addToast);
+  const addToast = useStore((s) => s.addToast);
 
   useEffect(() => {
     gsap.fromTo(backdropRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'power2.out' });
@@ -133,12 +133,12 @@ function AddTransactionModal({ onClose }) {
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
     setSubmitting(true);
     const tx = {
-      id:       Date.now(),
-      desc:     form.desc.trim(),
-      amount:   parseFloat(form.amount),
-      date:     form.date,
+      id: Date.now(),
+      desc: form.desc.trim(),
+      amount: parseFloat(form.amount),
+      date: form.date,
       category: form.category,
-      type:     form.type,
+      type: form.type,
     };
     setTimeout(() => {
       addTransaction(tx);
@@ -158,8 +158,8 @@ function AddTransactionModal({ onClose }) {
     'w-full px-4 py-3 rounded-input text-sm bg-surface border text-text-primary ' +
     'placeholder:text-text-muted focus:outline-none transition-colors';
   const fieldNormal = `${fieldBase} border-border-subtle focus:border-accent-primary/50`;
-  const fieldError  = `${fieldBase} border-danger/60`;
-  const labelClass  = 'block text-[11px] font-semibold text-text-muted uppercase tracking-widest mb-2';
+  const fieldError = `${fieldBase} border-danger/60`;
+  const labelClass = 'block text-[11px] font-semibold text-text-muted uppercase tracking-widest mb-2';
 
   return (
     <div className="fixed inset-0 z-[500] flex items-center justify-center p-4">
@@ -239,8 +239,8 @@ function AddTransactionModal({ onClose }) {
                 className="flex-1 py-2.5 rounded-[10px] text-sm font-semibold border transition-all duration-200"
                 style={form.type === t ? {
                   background: t === 'income' ? `${COLORS.success}15` : `${COLORS.danger}15`,
-                  border:     t === 'income' ? `1px solid ${COLORS.success}40` : `1px solid ${COLORS.danger}40`,
-                  color:      t === 'income' ? COLORS.success : COLORS.danger,
+                  border: t === 'income' ? `1px solid ${COLORS.success}40` : `1px solid ${COLORS.danger}40`,
+                  color: t === 'income' ? COLORS.success : COLORS.danger,
                 } : undefined}
                 {...(form.type !== t ? {
                   className: 'flex-1 py-2.5 rounded-[10px] text-sm font-semibold border border-border-subtle text-text-muted hover:text-text-secondary transition-all duration-200'
@@ -265,7 +265,7 @@ function AddTransactionModal({ onClose }) {
             disabled={!isValid || submitting}
             className="flex-1 py-2.5 rounded-btn text-sm font-semibold text-slate-900 hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
             style={{
-              background: `linear-gradient(to right, ${COLORS.primary}, ${COLORS.secondary})`,
+              backgroundColor: COLORS.primary,
             }}
           >
             {submitting ? 'Adding…' : 'Add Transaction'}

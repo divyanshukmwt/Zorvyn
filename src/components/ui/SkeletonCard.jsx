@@ -1,7 +1,5 @@
 import React from 'react';
 
-// Uses the shimmer-dark CSS class defined in index.css,
-// which handles both dark and light themes automatically.
 function SkeletonBlock({ className = '', style = {} }) {
   return (
     <div

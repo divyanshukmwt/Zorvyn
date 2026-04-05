@@ -1,12 +1,11 @@
 import React from 'react';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
-import { COLORS } from '../../constants/colors';
+import { COLORS } from '../../constants/color';
 
 function Badge({ value, suffix = '%', showIcon = true, size = 'sm' }) {
   const isPositive = value > 0;
   const isNeutral  = value === 0;
 
-  // neutral uses a fixed semi-transparent grey (same in both themes)
   const bgColor = isNeutral
     ? 'rgba(107, 114, 128, 0.2)'
     : isPositive

@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer,
 } from 'recharts';
 import { MONTHLY_SUMMARY } from '../../data/mockData';
 import { formatCurrency } from '../../utils/formatters';
-import { COLORS } from '../../constants/colors';
+import { COLORS } from '../../constants/color';
 
-const Primary   = COLORS.primary;
+const Primary = COLORS.primary;
 const Secondary = COLORS.secondary;
 
 function CustomTooltip({ active, payload, label }) {
@@ -33,9 +33,17 @@ function CustomTooltip({ active, payload, label }) {
 }
 
 function RevenueChart() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div className="h-full flex flex-col rounded-card p-6 bg-card border border-border-subtle transition-colors duration-300">
-      {/* Header */}
+
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-sm font-semibold text-text-primary">Revenue Overview</h2>
@@ -54,20 +62,24 @@ function RevenueChart() {
         </div>
       </div>
 
-      {/* Chart */}
       <div className="flex-1 min-h-[220px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={MONTHLY_SUMMARY}
-            margin={{ top: 5, right: 5, left: -20, bottom: 0 }}
-          >
+            margin={{
+              top: 5,
+              right: isMobile ? 1 : 5,
+              left: isMobile ? -19 : -20,
+              bottom: 10
+            }}
+          > 
             <defs>
               <linearGradient id="incomeGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%"  stopColor={Primary}   stopOpacity={0.25} />
-                <stop offset="95%" stopColor={Primary}   stopOpacity={0} />
+                <stop offset="5%" stopColor={Primary} stopOpacity={0.25} />
+                <stop offset="95%" stopColor={Primary} stopOpacity={0} />
               </linearGradient>
               <linearGradient id="expenseGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%"  stopColor={Secondary} stopOpacity={0.2} />
+                <stop offset="5%" stopColor={Secondary} stopOpacity={0.2} />
                 <stop offset="95%" stopColor={Secondary} stopOpacity={0} />
               </linearGradient>
             </defs>
@@ -80,13 +92,41 @@ function RevenueChart() {
 
             <XAxis
               dataKey="month"
-              tick={{ fill: 'var(--ff-text-secondary)', fontSize: 11, fontFamily: 'Sora' }}
+              interval={0}
+              padding={{
+                left: isMobile ? 1 : 10,
+                right: isMobile ? 9 : 10
+              }}
+              tick={({ x, y, payload, index }) => {
+
+                if (isMobile) {
+                  const isLast = index === MONTHLY_SUMMARY.length - 1;
+                  if (index % 2 === 0) return null;
+                }
+
+                return (
+                  <text
+                    x={x}
+                    y={y + 10}
+                    textAnchor="middle"
+                    fill="var(--ff-text-secondary)"
+                    fontSize={isMobile ? 10 : 11}
+                    fontFamily="Sora"
+                  >
+                    {payload.value}
+                  </text>
+                );
+              }}
               axisLine={false}
               tickLine={false}
             />
 
             <YAxis
-              tick={{ fill: 'var(--ff-text-secondary)', fontSize: 10, fontFamily: 'Sora' }}
+              tick={{
+                fill: 'var(--ff-text-secondary)',
+                fontSize: 10,
+                fontFamily: 'Sora'
+              }}
               axisLine={false}
               tickLine={false}
               tickFormatter={(v) => `₹${v / 1000}K`}
@@ -120,6 +160,7 @@ function RevenueChart() {
               animationDuration={600}
               animationEasing="ease-out"
             />
+
           </AreaChart>
         </ResponsiveContainer>
       </div>

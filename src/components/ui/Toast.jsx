@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { CheckCircle, XCircle, Info, AlertTriangle, X } from 'lucide-react';
 import useStore from '../../store/useStore';
-import { COLORS } from '../../constants/colors';
+import { COLORS } from '../../constants/color';
 
 const AUTO_DISMISS_MS = 3200;
 

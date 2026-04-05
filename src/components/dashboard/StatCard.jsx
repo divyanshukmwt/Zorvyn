@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 import useAnimatedCounter from '../../hooks/useAnimatedCounter';
 import Badge from '../ui/Badge';
 import { formatCurrency } from '../../utils/formatters';
-import { COLORS } from '../../constants/colors';
+import { COLORS } from '../../constants/color';
 
 function StatCard({ icon: Icon, iconBg, iconColor, label, value, change, prefix = '₹' }) {
   const cardRef = useRef(null);

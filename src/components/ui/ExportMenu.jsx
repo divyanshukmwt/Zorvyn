@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import { gsap } from 'gsap';
 import useStore from '../../store/useStore';
 import { exportCSV, exportJSON } from '../../utils/exportData';
-import { COLORS } from '../../constants/colors';
+import { COLORS } from '../../constants/color';
 
 function ExportMenu() {
   const [open, setOpen]       = useState(false);

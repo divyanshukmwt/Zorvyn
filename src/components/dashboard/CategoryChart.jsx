@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import useStore from '../../store/useStore';
 import { getExpensesByCategory } from '../../utils/calculations';
 import { formatCurrency } from '../../utils/formatters';
-import { COLORS } from '../../constants/colors';
+import { COLORS } from '../../constants/color';
 
 import {
   BarChart,
@@ -17,17 +17,19 @@ import {
 function CategoryBreakdown() {
   const transactions = useStore((s) => s.transactions);
 
-  const data = useMemo(() => {
-    const raw = getExpensesByCategory(transactions);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
 
-    const sorted = raw
-      .map((item) => ({
-        ...item,
-      }))
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const data = useMemo(() => {
+    return getExpensesByCategory(transactions)
+      .map((item) => ({ ...item }))
       .sort((a, b) => b.total - a.total)
       .slice(0, 6);
-
-    return sorted;
   }, [transactions]);
 
   const getMutedColor = (index) => {
@@ -69,11 +71,23 @@ function CategoryBreakdown() {
 
       <div className="flex-1 min-h-[220px]">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
-            
+          <BarChart
+            data={data}
+            margin={{
+              top: 5,
+              left: isMobile ? -28 : -25,
+              right: isMobile ? 9 : 10,  
+              bottom: 0,
+            }}
+          >
+
             <XAxis
               dataKey="category"
-              tick={{ fill: 'var(--ff-text-secondary)', fontSize: 11 }}
+              hide={isMobile}
+              tick={{
+                fill: 'var(--ff-text-secondary)',
+                fontSize: 11,
+              }}
               axisLine={false}
               tickLine={false}
             />
@@ -85,7 +99,10 @@ function CategoryBreakdown() {
               tickFormatter={(v) => `₹${v / 1000}K`}
             />
 
-            <Tooltip content={<CustomTooltip />} cursor={{ fill: 'var(--ff-overlay)' }} />
+            <Tooltip
+              content={<CustomTooltip />}
+              cursor={{ fill: 'var(--ff-overlay)' }}
+            />
 
             <Bar
               dataKey="total"

@@ -4,7 +4,7 @@ import { gsap } from 'gsap';
 import useStore from '../../store/useStore';
 import ExportMenu from '../ui/ExportMenu';
 import { formatHeaderDate } from '../../utils/formatters';
-import { COLORS } from '../../constants/colors';
+import { COLORS } from '../../constants/color';
 
 const PAGE_TITLES = {
   dashboard: 'Dashboard',

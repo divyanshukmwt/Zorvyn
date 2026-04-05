@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 import { gsap } from 'gsap';
 import useStore from '../../store/useStore';
-import { COLORS } from '../../constants/colors';
+import { COLORS } from '../../constants/color';
 
 const NAV_ITEMS = [
   { id: 'dashboard',    label: 'Dashboard',    icon: LayoutDashboard },

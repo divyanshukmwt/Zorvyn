@@ -14,7 +14,7 @@ import {
 } from '../../utils/calculations';
 import { formatCurrency, formatPercent } from '../../utils/formatters';
 import { CATEGORIES } from '../../data/mockData';
-import { COLORS } from '../../constants/colors';
+import { COLORS } from '../../constants/color';
 
 function InsightRow({ icon: Icon, iconBg, label, value, sub, index }) {
   const ref = useRef(null);

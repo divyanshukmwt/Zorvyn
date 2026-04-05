@@ -11,7 +11,6 @@ html, body {
   overflow-x: hidden;
   max-width: 100%;
 }
-/* ─── Dark theme (default) ─────────────────────────────────── */
 :root {
   --ff-bg:             #0B0D12;
   --ff-surface:        #11131A;
@@ -30,7 +29,7 @@ html, body {
 html:not(.dark) {
   --ff-bg: #DCE3EC;
   --ff-surface: #E5EBF3;
-  --ff-card: #E3E9F1;   /* 👈 FINAL PERFECT VALUE */
+  --ff-card: #E3E9F1; 
 
   --ff-text-primary: #0F172A;
   --ff-text-secondary: #1E293B;
@@ -80,12 +79,11 @@ html:not(.dark) {
     background: rgba(0,0,0,0.35);
   }
 }
-/* Remove click focus from recharts SVG */
+
 .recharts-wrapper svg:focus {
   outline: none !important;
 }
 
-/* Also remove from all children */
 .recharts-wrapper *:focus {
   outline: none !important;
 }
@@ -106,7 +104,6 @@ html:not(.dark) {
   outline: none !important;
 }
 
-/* Shimmer animation */
 @keyframes shimmer {
   0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }

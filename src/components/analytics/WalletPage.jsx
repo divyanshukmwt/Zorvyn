@@ -12,7 +12,7 @@ import {
   getSavingsRate,
 } from '../../utils/calculations';
 import { formatCurrency } from '../../utils/formatters';
-import { COLORS } from '../../constants/colors';
+import { COLORS } from '../../constants/color';
 
 const PLACEHOLDER_ACCOUNTS = [
   { icon: Building2,   label: 'Bank Account', sub: 'Connect your savings account', color: COLORS.primary },
@@ -43,7 +43,6 @@ function WalletPage() {
   return (
     <div className="space-y-6">
 
-      {/* Balance Card */}
       <div
         className="rounded-card p-8 relative overflow-hidden border border-border-subtle"
         style={{
@@ -73,7 +72,6 @@ function WalletPage() {
         </p>
       </div>
 
-      {/* Ratio Card */}
       <div className="rounded-card p-6 bg-card border border-border-subtle">
         <h2 className="text-sm font-semibold mb-5 text-text-primary">Income vs Expense Ratio</h2>
 
@@ -109,7 +107,6 @@ function WalletPage() {
           </div>
         </div>
 
-        {/* Progress bar */}
         <div className="relative h-3 rounded-full overflow-hidden">
           <div
             className="absolute inset-0 rounded-full"
@@ -135,7 +132,6 @@ function WalletPage() {
         </div>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-2 gap-4">
         <div className="rounded-card p-5 bg-card border border-border-subtle">
           <div
@@ -176,7 +172,6 @@ function WalletPage() {
         </div>
       </div>
 
-      {/* Accounts */}
       <div className="rounded-card p-6 bg-card border border-border-subtle">
         <div className="flex items-center justify-between mb-5">
           <div>
