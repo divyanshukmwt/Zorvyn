@@ -1,11 +1,14 @@
-import React from 'react';
-import { Search, X } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Search, X, ChevronDown } from 'lucide-react';
 import useStore from '../../store/useStore';
-import { CATEGORY_NAMES } from '../../data/mockData';
+import { CATEGORY_NAMES, CATEGORIES } from '../../data/mockData';
 
 function TransactionFilters() {
   const filters = useStore((s) => s.filters);
   const setFilter = useStore((s) => s.setFilter);
+
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const hasActiveFilters =
     filters.search !== '' ||
@@ -18,6 +21,20 @@ function TransactionFilters() {
     setFilter('type', 'all');
     setFilter('sort', 'date');
   };
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const selectedCategory =
+    filters.category === 'all' ? null : CATEGORIES[filters.category];
 
   return (
     <div className="flex flex-wrap gap-3 items-center">
@@ -67,23 +84,62 @@ function TransactionFilters() {
         <option value="expense">Expense</option>
       </select>
 
-      {/* Category filter */}
-      <select
-        value={filters.category}
-        onChange={(e) => setFilter('category', e.target.value)}
-        className="
-          px-3.5 py-2.5 rounded-input
-          bg-card-dark border border-white/[0.07]
-          text-sm text-slate-300
-          focus:border-accent-teal/50 focus:outline-none
-          transition-colors duration-200 cursor-pointer
-        "
-      >
-        <option value="all">All Categories</option>
-        {CATEGORY_NAMES.map((cat) => (
-          <option key={cat} value={cat}>{cat}</option>
-        ))}
-      </select>
+      {/* Category filter (Custom Dropdown with Icons) */}
+      <div className="relative" ref={dropdownRef}>
+        <button
+          onClick={() => setOpen(!open)}
+          className="
+            flex items-center gap-2 px-3.5 py-2.5 rounded-input
+            bg-card-dark border border-white/[0.07]
+            text-sm text-slate-300
+            focus:border-accent-teal/50 transition-colors
+          "
+        >
+          {selectedCategory ? (
+            <>
+              {selectedCategory.icon && (
+                <selectedCategory.icon size={16} />
+              )}
+              {filters.category}
+            </>
+          ) : (
+            'All Categories'
+          )}
+          <ChevronDown size={14} />
+        </button>
+
+        {open && (
+          <div className="absolute mt-2 w-48 bg-card-dark border border-white/[0.07] rounded-lg shadow-lg z-50">
+            <div
+              onClick={() => {
+                setFilter('category', 'all');
+                setOpen(false);
+              }}
+              className="px-3 py-2 text-sm hover:bg-white/5 cursor-pointer"
+            >
+              All Categories
+            </div>
+
+            {CATEGORY_NAMES.map((cat) => {
+              const Icon = CATEGORIES[cat].icon;
+
+              return (
+                <div
+                  key={cat}
+                  onClick={() => {
+                    setFilter('category', cat);
+                    setOpen(false);
+                  }}
+                  className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-white/5 cursor-pointer"
+                >
+                  {Icon && <Icon size={16} />}
+                  {cat}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
 
       {/* Sort */}
       <select

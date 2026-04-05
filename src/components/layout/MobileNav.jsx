@@ -66,7 +66,7 @@ function MobileDrawer({ open, onClose }) {
               <Zap size={13} className="text-bg-dark" strokeWidth={2.5} />
             </div>
             <span className="text-base font-bold bg-gradient-to-r from-accent-teal to-accent-indigo bg-clip-text text-transparent">
-              FinFlow
+              Zorvyn
             </span>
           </div>
           <button

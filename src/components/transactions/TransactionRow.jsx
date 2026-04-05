@@ -5,16 +5,16 @@ import useStore from '../../store/useStore';
 import { CATEGORIES } from '../../data/mockData';
 import { formatCurrency, formatDate } from '../../utils/formatters';
 
-/**
- * @param {{ transaction: import('../../store/useStore').Transaction }} props
- */
 function TransactionRow({ transaction }) {
   const ref = useRef(null);
   const role = useStore((s) => s.role);
   const deleteTransaction = useStore((s) => s.deleteTransaction);
   const addToast = useStore((s) => s.addToast);
 
-  const catMeta = CATEGORIES[transaction.category] || { emoji: '💸', color: '#818CF8' };
+  const catMeta =
+    CATEGORIES[transaction.category] || { icon: null, color: '#818CF8' };
+
+  const Icon = catMeta.icon;
   const isIncome = transaction.type === 'income';
 
   const handleMouseEnter = () => {
@@ -34,7 +34,6 @@ function TransactionRow({ transaction }) {
   };
 
   const handleDelete = () => {
-    // Animate out before removing
     gsap.to(ref.current, {
       x: 20,
       opacity: 0,
@@ -62,22 +61,29 @@ function TransactionRow({ transaction }) {
         transition-colors duration-200
       "
     >
-      {/* Category emoji */}
+      {/* Category Icon */}
       <div
-        className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
+        className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
         style={{ background: `${catMeta.color}18` }}
       >
-        {catMeta.emoji}
+        {Icon && <Icon size={18} style={{ color: catMeta.color }} />}
       </div>
 
       {/* Description */}
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold text-slate-200 truncate">{transaction.desc}</p>
+        <p className="text-sm font-semibold text-slate-200 truncate">
+          {transaction.desc}
+        </p>
         <div className="flex items-center gap-2 mt-0.5">
-          <span className="text-[11px] text-slate-500">{formatDate(transaction.date, 'short')}</span>
+          <span className="text-[11px] text-slate-500">
+            {formatDate(transaction.date, 'short')}
+          </span>
           <span
             className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
-            style={{ background: `${catMeta.color}18`, color: catMeta.color }}
+            style={{
+              background: `${catMeta.color}18`,
+              color: catMeta.color,
+            }}
           >
             {transaction.category}
           </span>
@@ -90,7 +96,8 @@ function TransactionRow({ transaction }) {
           isIncome ? 'text-success' : 'text-danger'
         }`}
       >
-        {isIncome ? '+' : '−'}{formatCurrency(transaction.amount, { compact: true })}
+        {isIncome ? '+' : '−'}
+        {formatCurrency(transaction.amount, { compact: true })}
       </span>
 
       {/* Delete (admin only) */}

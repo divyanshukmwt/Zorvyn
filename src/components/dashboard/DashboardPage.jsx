@@ -30,7 +30,6 @@ function DashboardPage() {
     [transactions]
   );
 
-  // Stagger entrance animation
   useEffect(() => {
     if (!containerRef.current || isLoading) return;
     const cards = containerRef.current.querySelectorAll('[data-animate]');
@@ -56,7 +55,6 @@ function DashboardPage() {
 
   return (
     <div ref={containerRef} className="space-y-6">
-      {/* Stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
         <div data-animate="">
           <StatCard
@@ -90,15 +88,12 @@ function DashboardPage() {
         </div>
       </div>
 
-      {/* Charts row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div data-animate=""><RevenueChart /></div>
         <div data-animate=""><CategoryChart /></div>
       </div>
 
-      {/* Bottom: recent transactions + insights */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {/* Recent transactions — 2/3 width */}
         <div data-animate="" className="lg:col-span-2">
           <div className="bg-card-dark border border-white/[0.07] rounded-card p-6 transition-colors duration-300">
             <div className="flex items-center justify-between mb-5">
@@ -124,7 +119,6 @@ function DashboardPage() {
           </div>
         </div>
 
-        {/* Insights — 1/3 width */}
         <div data-animate="">
           <InsightsPanel />
         </div>

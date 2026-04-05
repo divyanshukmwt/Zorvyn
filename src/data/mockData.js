@@ -1,13 +1,25 @@
+import {
+  Utensils,
+  Car,
+  ShoppingBag,
+  HeartPulse,
+  Film,
+  Zap,
+  Wallet,
+  Laptop,
+  TrendingUp,
+} from "lucide-react";
+
 export const CATEGORIES = {
-  Food:          { color: '#F97316', emoji: '🍔' },
-  Transport:     { color: '#3B82F6', emoji: '🚗' },
-  Shopping:      { color: '#EC4899', emoji: '🛍️' },
-  Health:        { color: '#10B981', emoji: '💊' },
-  Entertainment: { color: '#8B5CF6', emoji: '🎬' },
-  Utilities:     { color: '#6366F1', emoji: '⚡' },
-  Salary:        { color: '#34D399', emoji: '💰' },
-  Freelance:     { color: '#5EEAD4', emoji: '💻' },
-  Investment:    { color: '#FBBF24', emoji: '📈' },
+  Food:          { color: '#F97316', icon: Utensils },
+  Transport:     { color: '#3B82F6', icon: Car },
+  Shopping:      { color: '#EC4899', icon: ShoppingBag },
+  Health:        { color: '#10B981', icon: HeartPulse },
+  Entertainment: { color: '#8B5CF6', icon: Film },
+  Utilities:     { color: '#6366F1', icon: Zap },
+  Salary:        { color: '#34D399', icon: Wallet },
+  Freelance:     { color: '#5EEAD4', icon: Laptop },
+  Investment:    { color: '#FBBF24', icon: TrendingUp },
 };
 
 export const CATEGORY_NAMES = Object.keys(CATEGORIES);

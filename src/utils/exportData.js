@@ -21,7 +21,7 @@ export function exportCSV(transactions) {
 
   const csvContent = [CSV_HEADERS.join(','), ...rows].join('\n');
   const timestamp = new Date().toISOString().split('T')[0];
-  triggerDownload(csvContent, `finflow-transactions-${timestamp}.csv`, 'text/csv');
+  triggerDownload(csvContent, `Zorvyn-transactions-${timestamp}.csv`, 'text/csv');
 }
 
 export function exportJSON(transactions) {
@@ -35,5 +35,5 @@ export function exportJSON(transactions) {
     2
   );
   const timestamp = new Date().toISOString().split('T')[0];
-  triggerDownload(jsonContent, `finflow-transactions-${timestamp}.json`, 'application/json');
+  triggerDownload(jsonContent, `Zorvyn-transactions-${timestamp}.json`, 'application/json');
 }

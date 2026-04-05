@@ -69,7 +69,7 @@ function Sidebar() {
           <Zap size={15} className="text-bg-dark" strokeWidth={2.5} />
         </div>
         <span className="text-[17px] font-bold bg-gradient-to-r from-accent-teal to-accent-indigo bg-clip-text text-transparent">
-          FinFlow
+          Zorvyn
         </span>
       </div>
 
