@@ -13,7 +13,6 @@ function useMockApi() {
   const transactions = useStore((s) => s.transactions);
 
   const fetchData = useCallback(() => {
-
     if (transactions.length > 0) {
       return;
     }

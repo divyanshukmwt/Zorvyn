@@ -1,13 +1,20 @@
 import React from 'react';
+import { COLORS } from '../../constants/colors';
 
-function SkeletonBlock({ className = '' }) {
+function SkeletonBlock({ className = '', style = {} }) {
   return (
     <div
       className={`rounded-lg shimmer-bg ${className}`}
       style={{
-        background: 'linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%)',
+        background: `linear-gradient(
+          90deg,
+          ${COLORS.overlay} 25%,
+          ${COLORS.border} 50%,
+          ${COLORS.overlay} 75%
+        )`,
         backgroundSize: '200% 100%',
         animation: 'shimmer 1.5s infinite',
+        ...style
       }}
     />
   );
@@ -15,7 +22,13 @@ function SkeletonBlock({ className = '' }) {
 
 export function SkeletonStatCard() {
   return (
-    <div className="bg-card-dark border border-white/[0.07] rounded-card p-6">
+    <div
+      className="rounded-card p-6"
+      style={{
+        background: COLORS.card,
+        border: `1px solid ${COLORS.border}`
+      }}
+    >
       <SkeletonBlock className="w-11 h-11 rounded-xl mb-4" />
       <SkeletonBlock className="w-24 h-3 mb-3" />
       <SkeletonBlock className="w-36 h-7 mb-4" />
@@ -26,11 +39,18 @@ export function SkeletonStatCard() {
 
 export function SkeletonChartCard() {
   return (
-    <div className="bg-card-dark border border-white/[0.07] rounded-card p-6">
+    <div
+      className="rounded-card p-6"
+      style={{
+        background: COLORS.card,
+        border: `1px solid ${COLORS.border}`
+      }}
+    >
       <div className="flex items-center justify-between mb-6">
         <SkeletonBlock className="w-32 h-4" />
         <SkeletonBlock className="w-20 h-4" />
       </div>
+
       <div className="flex items-end gap-2 h-40">
         {[60, 80, 45, 90, 55, 75, 65, 85, 50, 70, 95, 60].map((h, i) => (
           <SkeletonBlock

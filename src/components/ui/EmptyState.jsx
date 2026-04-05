@@ -1,15 +1,34 @@
 import React from 'react';
+import { COLORS } from '../../constants/colors';
 
-function EmptyState({ emoji = '📭', title, subtitle, action }) {
+function EmptyState({ icon: Icon, title, subtitle, action }) {
   return (
     <div className="flex flex-col items-center justify-center py-16 px-6 text-center gap-4">
-      <div className="text-5xl select-none">{emoji}</div>
-      <div>
-        <h3 className="text-lg font-bold text-slate-200 dark:text-slate-200 mb-1">{title}</h3>
-        {subtitle && (
-          <p className="text-sm text-slate-500 max-w-xs mx-auto leading-relaxed">{subtitle}</p>
+      
+      <div className="select-none">
+        {Icon && (
+          <Icon size={44} strokeWidth={1.5} style={{ color: COLORS.textSecondary }} />
         )}
       </div>
+
+      <div>
+        <h3
+          className="text-lg font-bold mb-1"
+          style={{ color: COLORS.textPrimary }}
+        >
+          {title}
+        </h3>
+
+        {subtitle && (
+          <p
+            className="text-sm max-w-xs mx-auto leading-relaxed"
+            style={{ color: COLORS.textMuted }}
+          >
+            {subtitle}
+          </p>
+        )}
+      </div>
+
       {action && <div className="mt-2">{action}</div>}
     </div>
   );

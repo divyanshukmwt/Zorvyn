@@ -1,10 +1,12 @@
 import React, { useMemo, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import { Receipt, Search } from 'lucide-react';
 import useStore from '../../store/useStore';
 import useDebounce from '../../hooks/useDebounce';
 import TransactionFilters from './TransactionFilters';
 import TransactionRow from './TransactionRow';
 import EmptyState from '../ui/EmptyState';
+import { COLORS } from '../../constants/colors';
 
 function TransactionTable() {
   const transactions = useStore((s) => s.transactions);
@@ -25,7 +27,6 @@ function TransactionTable() {
   const filtered = useMemo(() => {
     let result = [...transactions];
 
-    // Search
     if (debouncedSearch) {
       const q = debouncedSearch.toLowerCase();
       result = result.filter(
@@ -35,17 +36,14 @@ function TransactionTable() {
       );
     }
 
-    // Type
     if (filters.type !== 'all') {
       result = result.filter((t) => t.type === filters.type);
     }
 
-    // Category
     if (filters.category !== 'all') {
       result = result.filter((t) => t.category === filters.category);
     }
 
-    // Sort
     if (filters.sort === 'amount') {
       result.sort((a, b) => b.amount - a.amount);
     } else {
@@ -55,15 +53,22 @@ function TransactionTable() {
     return result;
   }, [transactions, debouncedSearch, filters.type, filters.category, filters.sort]);
 
-  // Stagger animate rows when filtered list changes
   useEffect(() => {
     if (!listRef.current) return;
+
     const rows = listRef.current.querySelectorAll('[data-tx-row]');
     if (!rows.length) return;
+
     gsap.fromTo(
       rows,
       { opacity: 0, y: 8 },
-      { opacity: 1, y: 0, duration: 0.3, stagger: 0.04, ease: 'power3.out' }
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.3,
+        stagger: 0.04,
+        ease: 'power3.out',
+      }
     );
   }, [filtered]);
 
@@ -71,42 +76,67 @@ function TransactionTable() {
   const hasNoTransactions = transactions.length === 0;
 
   return (
-    <div className="bg-card-dark border border-white/[0.07] rounded-card p-6 transition-colors duration-300">
+    <div
+      className="rounded-card p-6 transition-colors duration-300"
+      style={{
+        background: COLORS.card,
+        border: `1px solid ${COLORS.border}`
+      }}
+    >
       <div className="mb-5">
-        <h2 className="text-base font-bold text-slate-200">All Transactions</h2>
-        <p className="text-xs text-slate-500 mt-0.5">Manage and filter your transaction history</p>
+        <h2 className="text-base font-bold" style={{ color: COLORS.textPrimary }}>
+          All Transactions
+        </h2>
+        <p className="text-xs mt-0.5" style={{ color: COLORS.textMuted }}>
+          Manage and filter your transaction history
+        </p>
       </div>
 
       <TransactionFilters />
 
-      <p className="text-xs text-slate-500 mt-3 mb-4">
-        {filtered.length} of {transactions.length} transaction{transactions.length !== 1 ? 's' : ''}
+      <p
+        className="text-xs mt-3 mb-4"
+        style={{ color: COLORS.textMuted }}
+      >
+        {filtered.length} of {transactions.length} transaction
+        {transactions.length !== 1 ? 's' : ''}
       </p>
 
       {hasNoTransactions ? (
         <EmptyState
-          emoji="🧾"
+          icon={Receipt}
           title="No transactions yet"
           subtitle="Your transaction history will appear here once you start adding entries."
           action={
             role === 'admin' ? (
-              <span className="text-xs text-slate-500">
-                Use the <span className="text-accent-teal font-semibold">+ Add</span> button above to get started.
+              <span style={{ color: COLORS.textMuted }} className="text-xs">
+                Use the{' '}
+                <span style={{ color: COLORS.primary }} className="font-semibold">
+                  + Add
+                </span>{' '}
+                button above to get started.
               </span>
             ) : (
-              <span className="text-xs text-slate-500">Contact an admin to add transactions.</span>
+              <span style={{ color: COLORS.textMuted }} className="text-xs">
+                Contact an admin to add transactions.
+              </span>
             )
           }
         />
       ) : hasNoResults ? (
         <EmptyState
-          emoji="🔍"
+          icon={Search}
           title="No results found"
           subtitle="Try a different search term or clear your filters."
           action={
             <button
               onClick={clearFilters}
-              className="px-4 py-2 rounded-btn text-sm font-semibold bg-accent-teal/10 text-accent-teal border border-accent-teal/20 hover:bg-accent-teal/15 transition-colors"
+              className="px-4 py-2 rounded-btn text-sm font-semibold transition-colors"
+              style={{
+                background: `${COLORS.primary}15`,
+                color: COLORS.primary,
+                border: `1px solid ${COLORS.primary}30`
+              }}
             >
               Clear Filters
             </button>

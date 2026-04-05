@@ -1,13 +1,6 @@
 import React, { useRef, useEffect, useMemo } from 'react';
 import { gsap } from 'gsap';
-import {
-  TrendingUp,
-  TrendingDown,
-  PiggyBank,
-  Zap,
-  Target,
-  Activity,
-} from 'lucide-react';
+import { TrendingUp, TrendingDown, PiggyBank, Target, Activity } from 'lucide-react';
 import useStore from '../../store/useStore';
 import {
   getTotalIncome,
@@ -21,6 +14,7 @@ import {
 } from '../../utils/calculations';
 import { formatCurrency, formatPercent } from '../../utils/formatters';
 import { CATEGORIES } from '../../data/mockData';
+import { COLORS } from '../../constants/colors';
 
 function InsightRow({ icon: Icon, iconBg, label, value, sub, index }) {
   const ref = useRef(null);
@@ -30,39 +24,43 @@ function InsightRow({ icon: Icon, iconBg, label, value, sub, index }) {
     gsap.fromTo(
       ref.current,
       { opacity: 0, x: 12 },
-      {
-        opacity: 1,
-        x: 0,
-        duration: 0.4,
-        delay: index * 0.08,
-        ease: 'power3.out',
-      }
+      { opacity: 1, x: 0, duration: 0.4, delay: index * 0.08, ease: 'power3.out' }
     );
   }, []);
 
   return (
     <div
       ref={ref}
-      className="flex items-center gap-3 p-3 rounded-xl bg-surface-dark border border-white/[0.06] mb-2"
+      className="flex items-center gap-3 p-3 rounded-xl mb-2"
+      style={{ background: COLORS.surface, border: `1px solid ${COLORS.border}` }}
     >
       <div
-        className={`w-9 h-9 rounded-[10px] ${iconBg} flex items-center justify-center flex-shrink-0`}
+        className="w-9 h-9 rounded-[10px] flex items-center justify-center flex-shrink-0"
+        style={{ background: iconBg }}
       >
-        <Icon size={15} strokeWidth={2} className="text-slate-300" />
+        <Icon size={15} strokeWidth={2} style={{ color: COLORS.textSecondary }} />
       </div>
 
       <div className="flex-1 min-w-0">
-        <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">
+        <p
+          className="text-[10px] font-semibold uppercase tracking-widest"
+          style={{ color: COLORS.textMuted }}
+        >
           {label}
         </p>
 
-        {/* UPDATED: supports JSX values */}
-        <div className="text-sm font-bold text-slate-200 mt-0.5 flex items-center gap-1.5">
+        <p
+          className="text-sm font-bold font-mono mt-0.5 truncate"
+          style={{ color: COLORS.textPrimary }}
+        >
           {value}
-        </div>
+        </p>
 
         {sub && (
-          <p className="text-[11px] text-slate-500 mt-0.5 truncate">
+          <p
+            className="text-[11px] mt-0.5 truncate"
+            style={{ color: COLORS.textMuted }}
+          >
             {sub}
           </p>
         )}
@@ -91,98 +89,82 @@ function InsightsPanel() {
     const prevExpenses = getTotalExpenses(prevTx);
     const monthChange = getPercentChange(currExpenses, prevExpenses);
 
-    return {
-      income,
-      expenses,
-      savingsRate,
-      avgTx,
-      topCat,
-      monthChange,
-      currExpenses,
-      prevExpenses,
-    };
+    return { income, expenses, savingsRate, avgTx, topCat, monthChange };
   }, [transactions]);
 
   if (!insights) {
     return (
-      <div className="bg-card-dark border border-white/[0.07] rounded-card p-6">
-        <h2 className="text-sm font-semibold text-slate-200 mb-1">
+      <div
+        className="rounded-card p-6"
+        style={{ background: COLORS.card, border: `1px solid ${COLORS.border}` }}
+      >
+        <h2 className="text-sm font-semibold mb-1" style={{ color: COLORS.textPrimary }}>
           Insights
         </h2>
-        <p className="text-xs text-slate-500 mb-6">
+        <p className="text-xs mb-6" style={{ color: COLORS.textMuted }}>
           Financial health summary
         </p>
-        <p className="text-sm text-slate-600 text-center py-8">
+        <p className="text-sm text-center py-8" style={{ color: COLORS.textMuted }}>
           Add transactions to see insights
         </p>
       </div>
     );
   }
 
-  const topCatMeta = insights.topCat
-    ? CATEGORIES[insights.topCat.category]
-    : null;
-
+  const topCatMeta = insights.topCat ? CATEGORIES[insights.topCat.category] : null;
+  const TopIcon = topCatMeta?.icon || Activity;
   const isExpenseUp = insights.monthChange > 0;
 
   const rows = [
     {
       icon: PiggyBank,
-      iconBg: 'bg-success/15',
+      iconBg: `${COLORS.success}20`,
       label: 'Savings Rate',
       value: `${insights.savingsRate.toFixed(1)}%`,
       sub: `Net ₹${((insights.income - insights.expenses) / 100000).toFixed(1)}L saved`,
     },
     {
-      icon: Target,
-      iconBg: 'bg-warning/15',
+      icon: TopIcon,
+      iconBg: `${COLORS.warning}20`,
       label: 'Top Category',
-      value: topCatMeta ? (
-        <div className="flex items-center gap-1.5">
-          {topCatMeta.icon && <topCatMeta.icon size={14} />}
-          {insights.topCat.category}
-        </div>
-      ) : (
-        '—'
-      ),
+      value: insights.topCat ? insights.topCat.category : '—',
       sub: insights.topCat
-        ? formatCurrency(insights.topCat.total, { compact: true }) +
-          ' total spent'
+        ? formatCurrency(insights.topCat.total, { compact: true }) + ' total spent'
         : '',
     },
     {
-      icon: Zap,
-      iconBg: 'bg-accent-teal/15',
+      icon: Activity,
+      iconBg: `${COLORS.primary}20`,
       label: 'Avg Transaction',
       value: formatCurrency(insights.avgTx, { compact: true }),
       sub: `Across ${transactions.length} transactions`,
     },
     {
       icon: isExpenseUp ? TrendingUp : TrendingDown,
-      iconBg: isExpenseUp ? 'bg-danger/15' : 'bg-success/15',
+      iconBg: isExpenseUp ? `${COLORS.danger}20` : `${COLORS.success}20`,
       label: 'Monthly Change',
       value: formatPercent(insights.monthChange),
       sub: `Expenses vs last month`,
     },
     {
       icon: Activity,
-      iconBg: 'bg-accent-indigo/15',
+      iconBg: `${COLORS.secondary}20`,
       label: 'Net Balance',
-      value: formatCurrency(
-        insights.income - insights.expenses,
-        { compact: true }
-      ),
+      value: formatCurrency(insights.income - insights.expenses, { compact: true }),
       sub: `Income − Expenses`,
     },
   ];
 
   return (
-    <div className="bg-card-dark border border-white/[0.07] rounded-card p-6 transition-colors duration-300">
+    <div
+      className="rounded-card p-6 transition-colors duration-300"
+      style={{ background: COLORS.card, border: `1px solid ${COLORS.border}` }}
+    >
       <div className="mb-5">
-        <h2 className="text-sm font-semibold text-slate-200">
+        <h2 className="text-sm font-semibold" style={{ color: COLORS.textPrimary }}>
           Insights
         </h2>
-        <p className="text-xs text-slate-500 mt-0.5">
+        <p className="text-xs mt-0.5" style={{ color: COLORS.textMuted }}>
           Financial health summary
         </p>
       </div>

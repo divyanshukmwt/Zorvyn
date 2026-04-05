@@ -12,9 +12,6 @@ const INITIAL_FORM = {
   type: 'expense',
 };
 
-/**
- * @param {{ onClose: () => void }} props
- */
 function AddTransactionModal({ onClose }) {
   const [form, setForm] = useState(INITIAL_FORM);
   const [errors, setErrors] = useState({});
@@ -25,7 +22,6 @@ function AddTransactionModal({ onClose }) {
   const addTransaction = useStore((s) => s.addTransaction);
   const addToast = useStore((s) => s.addToast);
 
-  // Open animation
   useEffect(() => {
     gsap.fromTo(
       backdropRef.current,
@@ -51,7 +47,6 @@ function AddTransactionModal({ onClose }) {
     });
   }, [onClose]);
 
-  // Close on Escape
   useEffect(() => {
     const handler = (e) => { if (e.key === 'Escape') close(); };
     document.addEventListener('keydown', handler);
@@ -69,9 +64,13 @@ function AddTransactionModal({ onClose }) {
 
   const handleSubmit = () => {
     const errs = validate();
-    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
 
     setSubmitting(true);
+
     const tx = {
       id: Date.now(),
       desc: form.desc.trim(),
@@ -93,11 +92,14 @@ function AddTransactionModal({ onClose }) {
     if (errors[key]) setErrors((p) => ({ ...p, [key]: undefined }));
   };
 
-  const isValid = form.desc.trim() && form.amount && Number(form.amount) > 0 && form.date;
+  const isValid =
+    form.desc.trim() &&
+    form.amount &&
+    Number(form.amount) > 0 &&
+    form.date;
 
   return (
     <div className="fixed inset-0 z-[500] flex items-center justify-center p-4">
-      {/* Backdrop */}
       <div
         ref={backdropRef}
         onClick={close}
@@ -105,7 +107,6 @@ function AddTransactionModal({ onClose }) {
         style={{ opacity: 0 }}
       />
 
-      {/* Modal */}
       <div
         ref={modalRef}
         className="
@@ -115,7 +116,6 @@ function AddTransactionModal({ onClose }) {
         "
         style={{ opacity: 0 }}
       >
-        {/* Close */}
         <button
           onClick={close}
           className="absolute top-5 right-5 w-8 h-8 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] text-slate-400 hover:text-slate-200 flex items-center justify-center transition-colors"
@@ -123,9 +123,10 @@ function AddTransactionModal({ onClose }) {
           <X size={15} />
         </button>
 
-        <h2 className="text-lg font-bold text-slate-200 mb-6">New Transaction</h2>
+        <h2 className="text-lg font-bold text-slate-200 mb-6">
+          New Transaction
+        </h2>
 
-        {/* Description */}
         <div className="mb-4">
           <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-widest mb-2">
             Description
@@ -142,10 +143,11 @@ function AddTransactionModal({ onClose }) {
               ${errors.desc ? 'border-danger/60' : 'border-white/[0.07]'}
             `}
           />
-          {errors.desc && <p className="text-xs text-danger mt-1.5">{errors.desc}</p>}
+          {errors.desc && (
+            <p className="text-xs text-danger mt-1.5">{errors.desc}</p>
+          )}
         </div>
 
-        {/* Amount */}
         <div className="mb-4">
           <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-widest mb-2">
             Amount (₹)
@@ -164,10 +166,11 @@ function AddTransactionModal({ onClose }) {
               ${errors.amount ? 'border-danger/60' : 'border-white/[0.07]'}
             `}
           />
-          {errors.amount && <p className="text-xs text-danger mt-1.5">{errors.amount}</p>}
+          {errors.amount && (
+            <p className="text-xs text-danger mt-1.5">{errors.amount}</p>
+          )}
         </div>
 
-        {/* Date */}
         <div className="mb-4">
           <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-widest mb-2">
             Date
@@ -183,10 +186,11 @@ function AddTransactionModal({ onClose }) {
               ${errors.date ? 'border-danger/60' : 'border-white/[0.07]'}
             `}
           />
-          {errors.date && <p className="text-xs text-danger mt-1.5">{errors.date}</p>}
+          {errors.date && (
+            <p className="text-xs text-danger mt-1.5">{errors.date}</p>
+          )}
         </div>
 
-        {/* Category */}
         <div className="mb-4">
           <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-widest mb-2">
             Category
@@ -201,12 +205,13 @@ function AddTransactionModal({ onClose }) {
             "
           >
             {CATEGORY_NAMES.map((cat) => (
-              <option key={cat} value={cat}>{cat}</option>
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
             ))}
           </select>
         </div>
 
-        {/* Type toggle */}
         <div className="mb-6">
           <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-widest mb-2">
             Type
@@ -219,11 +224,12 @@ function AddTransactionModal({ onClose }) {
                 className={`
                   flex-1 py-2.5 rounded-[10px] text-sm font-semibold
                   border transition-all duration-200
-                  ${form.type === t
-                    ? t === 'income'
-                      ? 'bg-success/15 border-success/40 text-success'
-                      : 'bg-danger/15 border-danger/40 text-danger'
-                    : 'bg-transparent border-white/[0.07] text-slate-500 hover:text-slate-300'
+                  ${
+                    form.type === t
+                      ? t === 'income'
+                        ? 'bg-success/15 border-success/40 text-success'
+                        : 'bg-danger/15 border-danger/40 text-danger'
+                      : 'bg-transparent border-white/[0.07] text-slate-500 hover:text-slate-300'
                   }
                 `}
               >
@@ -233,7 +239,6 @@ function AddTransactionModal({ onClose }) {
           </div>
         </div>
 
-        {/* Actions */}
         <div className="flex gap-3">
           <button
             onClick={close}
@@ -245,6 +250,7 @@ function AddTransactionModal({ onClose }) {
           >
             Cancel
           </button>
+
           <button
             onClick={handleSubmit}
             disabled={!isValid || submitting}

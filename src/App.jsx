@@ -1,120 +1,111 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import useStore from './store/useStore';
+import useMockApi from './hooks/useMockApi';
 
 import Sidebar from './components/layout/Sidebar';
 import Header from './components/layout/Header';
 import MobileNav, { MobileDrawer } from './components/layout/MobileNav';
 import Toast from './components/ui/Toast';
 import AddTransactionModal from './components/transactions/AddTransactionModal';
+
 import DashboardPage from './components/dashboard/DashboardPage';
 import TransactionTable from './components/transactions/TransactionTable';
 import AnalyticsPage from './components/analytics/AnalyticsPage';
 import WalletPage from './components/analytics/WalletPage';
+import { COLORS } from './constants/colors';
 
-import useStore from './store/useStore';
-import useMockApi from './hooks/useMockApi';
+const PAGE_COMPONENTS = {
+  dashboard:    DashboardPage,
+  transactions: TransactionTable,
+  analytics:    AnalyticsPage,
+  wallet:       WalletPage,
+};
 
-function App() {
-  const page = useStore((s) => s.page);
-  const role = useStore((s) => s.role);
-  const theme = useStore((s) => s.theme);
-
-  const [modalOpen, setModalOpen] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
-  const pageRef = useRef(null);
+function PageContainer({ page }) {
+  const contentRef = useRef(null);
   const prevPage = useRef(page);
 
-  const { fetchData } = useMockApi();
+  useEffect(() => {
+    if (!contentRef.current) return;
 
-  // Load data on mount
+    if (prevPage.current !== page) {
+      gsap.fromTo(
+        contentRef.current,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.35, ease: 'power3.out' }
+      );
+      prevPage.current = page;
+    } else {
+      gsap.fromTo(
+        contentRef.current,
+        { opacity: 0, y: 6 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' }
+      );
+    }
+  }, [page]);
+
+  const ActivePage = PAGE_COMPONENTS[page] || DashboardPage;
+
+  return (
+    <div ref={contentRef} className="min-h-[60vh]">
+      <ActivePage />
+    </div>
+  );
+}
+
+function App() {
+  const theme = useStore((s) => s.theme);
+  const page = useStore((s) => s.page);
+  const role = useStore((s) => s.role);
+
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    if (theme === 'dark') {
+      html.classList.add('dark');
+    } else {
+      html.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const { fetchData } = useMockApi();
   useEffect(() => {
     fetchData();
   }, []);
 
-  // Intentionally broken theme logic — fixed in Commit 12
-  useEffect(() => {
-    const root = document.documentElement;
-    if (theme === 'dark') {
-      root.classList.remove('light');
-      document.body.classList.remove('light');
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-      root.classList.add('light');
-      document.body.classList.add('light');
-    }
-  }, [theme]);
-
-  // Page transition
-  useEffect(() => {
-    if (!pageRef.current || prevPage.current === page) return;
-    prevPage.current = page;
-
-    gsap.fromTo(
-      pageRef.current,
-      { opacity: 0, y: 10 },
-      { opacity: 1, y: 0, duration: 0.35, ease: 'power3.out' }
-    );
-  }, [page]);
-
-  const renderPage = () => {
-    switch (page) {
-      case 'dashboard':
-        return <DashboardPage />;
-      case 'transactions':
-        return <TransactionTable />;
-      case 'analytics':
-        return <AnalyticsPage />;
-      case 'wallet':
-        return <WalletPage />;
-      default:
-        return <DashboardPage />;
-    }
-  };
-
   return (
-    <div className={`flex min-h-screen bg-bg-dark transition-colors duration-300 ${theme === 'light' ? 'light' : ''}`}>
-
-      {/* Desktop Sidebar */}
+    <div
+      className="flex min-h-screen transition-colors duration-300"
+      style={{ background: COLORS.bg }}
+    >
       <Sidebar />
 
-      {/* Mobile Drawer */}
       <MobileDrawer
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
+        open={mobileDrawerOpen}
+        onClose={() => setMobileDrawerOpen(false)}
       />
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col lg:ml-[230px] min-w-0">
-
-        {/* Header */}
+      <div className="flex-1 flex flex-col lg:ml-[230px] min-h-screen">
         <Header
-          onMenuClick={() => setDrawerOpen(true)}
-          onAddTransaction={() => setModalOpen(true)}
+          onMenuClick={() => setMobileDrawerOpen(true)}
+          onAddTransaction={() => setShowModal(true)}
         />
 
-        {/* Page Content */}
-        <main
-          ref={pageRef}
-          className="flex-1 p-5 lg:p-8 pb-24 lg:pb-8 overflow-x-hidden"
-        >
-          {renderPage()}
+        <main className="flex-1 p-5 lg:p-8 pb-24 lg:pb-8">
+          <PageContainer page={page} />
         </main>
-
       </div>
 
-      {/* Mobile Bottom Nav */}
       <MobileNav />
 
-      {/* Add Transaction Modal — Admin only */}
-      {modalOpen && role === 'admin' && (
-        <AddTransactionModal onClose={() => setModalOpen(false)} />
+      {showModal && role === 'admin' && (
+        <AddTransactionModal onClose={() => setShowModal(false)} />
       )}
 
-      {/* Toast Notifications */}
       <Toast />
-
     </div>
   );
 }

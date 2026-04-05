@@ -2,33 +2,30 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { CheckCircle, XCircle, Info, AlertTriangle, X } from 'lucide-react';
 import useStore from '../../store/useStore';
+import { COLORS } from '../../constants/colors';
 
 const AUTO_DISMISS_MS = 3200;
 
 const TOAST_CONFIG = {
   success: {
     icon: CheckCircle,
-    borderColor: 'border-l-success',
-    iconColor: 'text-success',
-    bg: 'bg-card-dark',
+    borderColor: COLORS.success,
+    iconColor: COLORS.success,
   },
   error: {
     icon: XCircle,
-    borderColor: 'border-l-danger',
-    iconColor: 'text-danger',
-    bg: 'bg-card-dark',
+    borderColor: COLORS.danger,
+    iconColor: COLORS.danger,
   },
   info: {
     icon: Info,
-    borderColor: 'border-l-accent-teal',
-    iconColor: 'text-accent-teal',
-    bg: 'bg-card-dark',
+    borderColor: COLORS.primary,
+    iconColor: COLORS.primary,
   },
   warning: {
     icon: AlertTriangle,
-    borderColor: 'border-l-warning',
-    iconColor: 'text-warning',
-    bg: 'bg-card-dark',
+    borderColor: COLORS.warning,
+    iconColor: COLORS.warning,
   },
 };
 
@@ -63,18 +60,27 @@ function ToastItem({ id, msg, kind }) {
   return (
     <div
       ref={ref}
-      className={`
-        ${config.bg} border border-white/[0.08] border-l-4 ${config.borderColor}
-        rounded-xl px-4 py-3.5 flex items-center gap-3
-        min-w-[280px] max-w-[360px] shadow-card
-        pointer-events-auto
-      `}
+      className="rounded-xl px-4 py-3.5 flex items-center gap-3 min-w-[280px] max-w-[360px] pointer-events-auto"
+      style={{
+        background: COLORS.card,
+        border: `1px solid ${COLORS.border}`,
+        borderLeft: `4px solid ${config.borderColor}`,
+        boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+      }}
     >
-      <Icon size={16} className={`flex-shrink-0 ${config.iconColor}`} />
-      <span className="flex-1 text-sm font-medium text-slate-200">{msg}</span>
+      <Icon size={16} className="flex-shrink-0" style={{ color: config.iconColor }} />
+
+      <span
+        className="flex-1 text-sm font-medium"
+        style={{ color: COLORS.textPrimary }}
+      >
+        {msg}
+      </span>
+
       <button
         onClick={dismiss}
-        className="text-slate-500 hover:text-slate-300 transition-colors ml-1 flex-shrink-0"
+        className="transition-colors ml-1 flex-shrink-0"
+        style={{ color: COLORS.textMuted }}
         aria-label="Dismiss"
       >
         <X size={14} />

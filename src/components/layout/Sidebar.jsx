@@ -1,16 +1,17 @@
 import React, { useRef } from 'react';
 import {
   LayoutDashboard, ArrowLeftRight, BarChart2,
-  Wallet, Shield, Eye, Sun, Moon, Zap,
+  Wallet, Shield, Eye, Sun, Moon
 } from 'lucide-react';
 import { gsap } from 'gsap';
 import useStore from '../../store/useStore';
+import { COLORS } from '../../constants/colors';
 
 const NAV_ITEMS = [
   { id: 'dashboard',     label: 'Dashboard',     icon: LayoutDashboard },
   { id: 'transactions',  label: 'Transactions',  icon: ArrowLeftRight },
   { id: 'analytics',     label: 'Analytics',     icon: BarChart2 },
-  { id: 'wallet',        label: 'Wallet',         icon: Wallet },
+  { id: 'wallet',        label: 'Wallet',        icon: Wallet },
 ];
 
 function NavItem({ item, isActive, onClick }) {
@@ -20,6 +21,7 @@ function NavItem({ item, isActive, onClick }) {
   const handleMouseEnter = () => {
     gsap.to(ref.current, { x: 3, duration: 0.2, ease: 'power2.out' });
   };
+
   const handleMouseLeave = () => {
     gsap.to(ref.current, { x: 0, duration: 0.2, ease: 'power2.out' });
   };
@@ -30,18 +32,24 @@ function NavItem({ item, isActive, onClick }) {
       onClick={() => onClick(item.id)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`
+      className="
         relative w-full flex items-center gap-3 px-3 py-2.5 rounded-xl
         text-sm font-medium transition-colors duration-200 text-left
-        ${isActive
-          ? 'bg-gradient-to-r from-accent-teal/10 to-accent-indigo/10 text-accent-teal'
-          : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
-        }
-      `}
+      "
+      style={{
+        background: isActive
+          ? `linear-gradient(to right, ${COLORS.primary}15, ${COLORS.secondary}15)`
+          : 'transparent',
+        color: isActive ? COLORS.primary : COLORS.textSecondary
+      }}
     >
       {isActive && (
-        <span className="absolute left-[-4px] top-1/2 -translate-y-1/2 w-[3px] h-5 bg-accent-teal rounded-full" />
+        <span
+          className="absolute left-[-4px] top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-full"
+          style={{ background: COLORS.primary }}
+        />
       )}
+
       <Icon size={17} strokeWidth={isActive ? 2 : 1.75} className="flex-shrink-0" />
       <span>{item.label}</span>
     </button>
@@ -57,23 +65,30 @@ function Sidebar() {
   const toggleTheme = useStore((s) => s.toggleTheme);
 
   return (
-    <aside className="
-      hidden lg:flex flex-col
-      w-[230px] min-h-screen fixed left-0 top-0 bottom-0 z-50
-      bg-surface-dark border-r border-white/[0.06]
-      px-4 py-6
-      transition-colors duration-300
-    ">
-      <div className="flex items-center gap-2.5 mb-9 px-1">
-        <div className="w-8 h-8 rounded-[10px] bg-gradient-to-br from-accent-teal to-accent-indigo flex items-center justify-center flex-shrink-0">
-          <Zap size={15} className="text-bg-dark" strokeWidth={2.5} />
-        </div>
-        <span className="text-[17px] font-bold bg-gradient-to-r from-accent-teal to-accent-indigo bg-clip-text text-transparent">
-          Zorvyn
-        </span>
+    <aside
+      className="
+        hidden lg:flex flex-col
+        w-[230px] min-h-screen fixed left-0 top-0 bottom-0 z-50
+        px-4 py-6
+        transition-colors duration-300
+      "
+      style={{
+        background: COLORS.surface,
+        borderRight: `1px solid ${COLORS.border}`
+      }}
+    >
+      <div className="flex items-center mb-9 px-1">
+        <img
+          src="https://companyasset.blob.core.windows.net/assets/zorvynfulllogolight.png"
+          alt="Logo"
+          className="h-8 object-contain"
+        />
       </div>
 
-      <p className="text-[10px] font-semibold text-slate-600 uppercase tracking-widest px-3 mb-2">
+      <p
+        className="text-[10px] font-semibold uppercase tracking-widest px-3 mb-2"
+        style={{ color: COLORS.textMuted }}
+      >
         Navigation
       </p>
 
@@ -88,37 +103,47 @@ function Sidebar() {
         ))}
       </nav>
 
-      <div className="mt-6 pt-5 border-t border-white/[0.06]">
-        <p className="text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-3">
+      <div
+        className="mt-6 pt-5"
+        style={{ borderTop: `1px solid ${COLORS.border}` }}
+      >
+        <p
+          className="text-[10px] font-semibold uppercase tracking-widest mb-3"
+          style={{ color: COLORS.textMuted }}
+        >
           Access Role
         </p>
+
         <div className="flex gap-1.5">
           <button
             onClick={() => setRole('admin')}
-            className={`
-              flex-1 flex items-center justify-center gap-1.5
-              py-2 rounded-[10px] text-xs font-semibold
-              border transition-all duration-200
-              ${role === 'admin'
-                ? 'bg-gradient-to-r from-accent-teal/15 to-accent-indigo/15 border-accent-teal/40 text-accent-teal'
-                : 'bg-transparent border-white/[0.07] text-slate-500 hover:text-slate-300'
-              }
-            `}
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-[10px] text-xs font-semibold border transition-all duration-200"
+            style={{
+              background: role === 'admin'
+                ? `linear-gradient(to right, ${COLORS.primary}20, ${COLORS.secondary}20)`
+                : 'transparent',
+              border: role === 'admin'
+                ? `1px solid ${COLORS.primary}40`
+                : `1px solid ${COLORS.border}`,
+              color: role === 'admin' ? COLORS.primary : COLORS.textMuted
+            }}
           >
             <Shield size={11} strokeWidth={2.5} />
             Admin
           </button>
+
           <button
             onClick={() => setRole('viewer')}
-            className={`
-              flex-1 flex items-center justify-center gap-1.5
-              py-2 rounded-[10px] text-xs font-semibold
-              border transition-all duration-200
-              ${role === 'viewer'
-                ? 'bg-gradient-to-r from-accent-teal/15 to-accent-indigo/15 border-accent-teal/40 text-accent-teal'
-                : 'bg-transparent border-white/[0.07] text-slate-500 hover:text-slate-300'
-              }
-            `}
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-[10px] text-xs font-semibold border transition-all duration-200"
+            style={{
+              background: role === 'viewer'
+                ? `linear-gradient(to right, ${COLORS.primary}20, ${COLORS.secondary}20)`
+                : 'transparent',
+              border: role === 'viewer'
+                ? `1px solid ${COLORS.primary}40`
+                : `1px solid ${COLORS.border}`,
+              color: role === 'viewer' ? COLORS.primary : COLORS.textMuted
+            }}
           >
             <Eye size={11} strokeWidth={2.5} />
             Viewer
@@ -129,10 +154,13 @@ function Sidebar() {
           onClick={toggleTheme}
           className="
             w-full mt-3 flex items-center justify-center gap-2
-            py-2.5 rounded-xl bg-bg-dark border border-white/[0.06]
-            text-slate-500 hover:text-slate-300 hover:border-white/[0.12]
-            text-xs font-medium transition-all duration-200
+            py-2.5 rounded-xl text-xs font-medium transition-all duration-200
           "
+          style={{
+            background: COLORS.bg,
+            border: `1px solid ${COLORS.border}`,
+            color: COLORS.textMuted
+          }}
         >
           {theme === 'dark'
             ? <><Sun size={13} /> Light Mode</>

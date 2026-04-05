@@ -3,6 +3,7 @@ import { Download, FileText, Braces, ChevronDown } from 'lucide-react';
 import { gsap } from 'gsap';
 import useStore from '../../store/useStore';
 import { exportCSV, exportJSON } from '../../utils/exportData';
+import { COLORS } from '../../constants/colors';
 
 function ExportMenu() {
   const [open, setOpen] = useState(false);
@@ -52,49 +53,55 @@ function ExportMenu() {
     <div className="relative">
       <button
         onClick={() => setOpen((p) => !p)}
-        className="
-          flex items-center gap-2 px-3.5 py-2 rounded-btn
-          bg-surface-dark border border-white/[0.08]
-          text-slate-300 hover:text-slate-100 hover:border-white/[0.15]
-          text-sm font-medium transition-all duration-200
-        "
+        className="flex items-center gap-2 px-3.5 py-2 rounded-btn text-sm font-medium transition-all duration-200"
+        style={{
+          background: COLORS.surface,
+          border: `1px solid ${COLORS.border}`,
+          color: COLORS.textSecondary
+        }}
       >
         <Download size={14} />
         <span className="hidden sm:inline">Export</span>
-        <ChevronDown size={12} className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown
+          size={12}
+          className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+        />
       </button>
 
       {open && (
         <div
           ref={dropdownRef}
-          className="
-            absolute right-0 top-[calc(100%+8px)]
-            bg-card-dark border border-white/[0.08] rounded-xl
-            overflow-hidden min-w-[160px] z-50
-            shadow-[0_8px_32px_rgba(0,0,0,0.4)]
-          "
+          className="absolute right-0 top-[calc(100%+8px)] rounded-xl overflow-hidden min-w-[160px] z-50"
+          style={{
+            background: COLORS.card,
+            border: `1px solid ${COLORS.border}`,
+            boxShadow: '0 8px 32px rgba(0,0,0,0.4)'
+          }}
         >
           <button
             onClick={() => handleExport('csv')}
-            className="
-              w-full flex items-center gap-3 px-4 py-3
-              text-sm font-medium text-slate-300 hover:text-slate-100
-              hover:bg-surface-dark transition-colors text-left
-            "
+            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-left transition-colors"
+            style={{
+              color: COLORS.textSecondary
+            }}
           >
-            <FileText size={14} className="text-accent-teal" />
+            <FileText size={14} style={{ color: COLORS.primary }} />
             Export CSV
           </button>
-          <div className="h-px bg-white/[0.05] mx-3" />
+
+          <div
+            className="h-px mx-3"
+            style={{ background: COLORS.border }}
+          />
+
           <button
             onClick={() => handleExport('json')}
-            className="
-              w-full flex items-center gap-3 px-4 py-3
-              text-sm font-medium text-slate-300 hover:text-slate-100
-              hover:bg-surface-dark transition-colors text-left
-            "
+            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-left transition-colors"
+            style={{
+              color: COLORS.textSecondary
+            }}
           >
-            <Braces size={14} className="text-accent-indigo" />
+            <Braces size={14} style={{ color: COLORS.secondary }} />
             Export JSON
           </button>
         </div>
