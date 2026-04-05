@@ -13,13 +13,12 @@ import DashboardPage from './components/dashboard/DashboardPage';
 import TransactionTable from './components/transactions/TransactionTable';
 import AnalyticsPage from './components/analytics/AnalyticsPage';
 import WalletPage from './components/analytics/WalletPage';
-import { COLORS } from './constants/colors';
 
 const PAGE_COMPONENTS = {
-  dashboard:    DashboardPage,
+  dashboard: DashboardPage,
   transactions: TransactionTable,
-  analytics:    AnalyticsPage,
-  wallet:       WalletPage,
+  analytics: AnalyticsPage,
+  wallet: WalletPage,
 };
 
 function PageContainer({ page }) {
@@ -28,7 +27,6 @@ function PageContainer({ page }) {
 
   useEffect(() => {
     if (!contentRef.current) return;
-
     if (prevPage.current !== page) {
       gsap.fromTo(
         contentRef.current,
@@ -77,10 +75,7 @@ function App() {
   }, []);
 
   return (
-    <div
-      className="flex min-h-screen transition-colors duration-300"
-      style={{ background: COLORS.bg }}
-    >
+    <div className="flex min-h-screen transition-colors duration-300 bg-bg w-screen">
       <Sidebar />
 
       <MobileDrawer
@@ -88,7 +83,7 @@ function App() {
         onClose={() => setMobileDrawerOpen(false)}
       />
 
-      <div className="flex-1 flex flex-col lg:ml-[230px] min-h-screen">
+      <div className="flex-1 flex flex-col min-w-0 lg:ml-[230px] min-h-screen">
         <Header
           onMenuClick={() => setMobileDrawerOpen(true)}
           onAddTransaction={() => setShowModal(true)}

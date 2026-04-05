@@ -1,34 +1,19 @@
 import React from 'react';
-import { COLORS } from '../../constants/colors';
 
+// Uses the shimmer-dark CSS class defined in index.css,
+// which handles both dark and light themes automatically.
 function SkeletonBlock({ className = '', style = {} }) {
   return (
     <div
-      className={`rounded-lg shimmer-bg ${className}`}
-      style={{
-        background: `linear-gradient(
-          90deg,
-          ${COLORS.overlay} 25%,
-          ${COLORS.border} 50%,
-          ${COLORS.overlay} 75%
-        )`,
-        backgroundSize: '200% 100%',
-        animation: 'shimmer 1.5s infinite',
-        ...style
-      }}
+      className={`rounded-lg shimmer-dark ${className}`}
+      style={style}
     />
   );
 }
 
 export function SkeletonStatCard() {
   return (
-    <div
-      className="rounded-card p-6"
-      style={{
-        background: COLORS.card,
-        border: `1px solid ${COLORS.border}`
-      }}
-    >
+    <div className="rounded-card p-6 bg-card border border-border-subtle">
       <SkeletonBlock className="w-11 h-11 rounded-xl mb-4" />
       <SkeletonBlock className="w-24 h-3 mb-3" />
       <SkeletonBlock className="w-36 h-7 mb-4" />
@@ -39,18 +24,11 @@ export function SkeletonStatCard() {
 
 export function SkeletonChartCard() {
   return (
-    <div
-      className="rounded-card p-6"
-      style={{
-        background: COLORS.card,
-        border: `1px solid ${COLORS.border}`
-      }}
-    >
+    <div className="rounded-card p-6 bg-card border border-border-subtle">
       <div className="flex items-center justify-between mb-6">
         <SkeletonBlock className="w-32 h-4" />
         <SkeletonBlock className="w-20 h-4" />
       </div>
-
       <div className="flex items-end gap-2 h-40">
         {[60, 80, 45, 90, 55, 75, 65, 85, 50, 70, 95, 60].map((h, i) => (
           <SkeletonBlock

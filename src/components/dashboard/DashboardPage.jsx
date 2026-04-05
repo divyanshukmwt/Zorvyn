@@ -10,7 +10,6 @@ import TransactionRow from '../transactions/TransactionRow';
 import EmptyState from '../ui/EmptyState';
 import SkeletonCard, { SkeletonChartCard } from '../ui/SkeletonCard';
 import { getStatCardMetrics } from '../../utils/calculations';
-import { COLORS } from '../../constants/colors';
 
 const RECENT_TX_LIMIT = 8;
 
@@ -66,12 +65,8 @@ function DashboardPage() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-stretch">
-        <div data-animate className="h-full">
-          <RevenueChart />
-        </div>
-        <div data-animate className="h-full">
-          <CategoryChart />
-        </div>
+        <div data-animate className="h-full"><RevenueChart /></div>
+        <div data-animate className="h-full"><CategoryChart /></div>
       </div>
 
       {/* Bottom */}
@@ -79,16 +74,13 @@ function DashboardPage() {
 
         {/* Recent Transactions */}
         <div data-animate className="lg:col-span-2 h-full">
-          <div
-            className="h-full flex flex-col rounded-card p-6 transition-colors duration-300"
-            style={{ background: COLORS.card, border: `1px solid ${COLORS.border}` }}
-          >
+          <div className="h-full flex flex-col rounded-card p-6 bg-card border border-border-subtle transition-colors duration-300">
             <div className="flex items-center justify-between mb-5">
               <div>
-                <h2 className="text-sm font-semibold" style={{ color: COLORS.textPrimary }}>
+                <h2 className="text-sm font-semibold text-text-primary">
                   Recent Transactions
                 </h2>
-                <p className="text-xs mt-0.5" style={{ color: COLORS.textMuted }}>
+                <p className="text-xs mt-0.5 text-text-muted">
                   Last {RECENT_TX_LIMIT} entries
                 </p>
               </div>

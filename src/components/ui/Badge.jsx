@@ -4,16 +4,17 @@ import { COLORS } from '../../constants/colors';
 
 function Badge({ value, suffix = '%', showIcon = true, size = 'sm' }) {
   const isPositive = value > 0;
-  const isNeutral = value === 0;
+  const isNeutral  = value === 0;
 
+  // neutral uses a fixed semi-transparent grey (same in both themes)
   const bgColor = isNeutral
-    ? `${COLORS.textMuted}20`
+    ? 'rgba(107, 114, 128, 0.2)'
     : isPositive
     ? `${COLORS.success}20`
     : `${COLORS.danger}20`;
 
   const textColor = isNeutral
-    ? COLORS.textMuted
+    ? 'var(--ff-text-muted)'
     : isPositive
     ? COLORS.success
     : COLORS.danger;
@@ -25,10 +26,7 @@ function Badge({ value, suffix = '%', showIcon = true, size = 'sm' }) {
   return (
     <span
       className={`inline-flex items-center gap-1 rounded-badge font-semibold ${sizeClasses}`}
-      style={{
-        background: bgColor,
-        color: textColor
-      }}
+      style={{ background: bgColor, color: textColor }}
     >
       {showIcon && <Icon size={10} strokeWidth={2.5} />}
       {Math.abs(value).toFixed(1)}{suffix}

@@ -8,33 +8,24 @@ import { COLORS } from '../../constants/colors';
 
 function TransactionRow({ transaction }) {
   const ref = useRef(null);
-  const role = useStore((s) => s.role);
+  const role             = useStore((s) => s.role);
   const deleteTransaction = useStore((s) => s.deleteTransaction);
-  const addToast = useStore((s) => s.addToast);
+  const addToast         = useStore((s) => s.addToast);
 
-  const catMeta =
-    CATEGORIES[transaction.category] || {
-      color: COLORS.secondary,
-      icon: CircleDollarSign,
-    };
+  const catMeta = CATEGORIES[transaction.category] || {
+    color: COLORS.secondary,
+    icon: CircleDollarSign,
+  };
 
-  const Icon = catMeta.icon;
+  const Icon     = catMeta.icon;
   const isIncome = transaction.type === 'income';
 
   const handleMouseEnter = () => {
-    gsap.to(ref.current, {
-      backgroundColor: COLORS.overlay,
-      duration: 0.15,
-      ease: 'power2.out',
-    });
+    gsap.to(ref.current, { backgroundColor: 'var(--ff-overlay)', duration: 0.15, ease: 'power2.out' });
   };
 
   const handleMouseLeave = () => {
-    gsap.to(ref.current, {
-      backgroundColor: 'transparent',
-      duration: 0.2,
-      ease: 'power2.out',
-    });
+    gsap.to(ref.current, { backgroundColor: 'transparent', duration: 0.2, ease: 'power2.out' });
   };
 
   const handleDelete = () => {
@@ -59,14 +50,7 @@ function TransactionRow({ transaction }) {
       ref={ref}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="
-        flex items-center gap-3 sm:gap-4 p-3.5 rounded-xl
-        transition-colors duration-200
-      "
-      style={{
-        border: `1px solid ${COLORS.border}`,
-        background: COLORS.card
-      }}
+      className="flex items-center gap-3 sm:gap-4 p-3.5 rounded-xl transition-colors duration-200 bg-card border border-border-subtle"
     >
       <div
         className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
@@ -76,27 +60,16 @@ function TransactionRow({ transaction }) {
       </div>
 
       <div className="flex-1 min-w-0">
-        <p
-          className="text-sm font-semibold truncate"
-          style={{ color: COLORS.textPrimary }}
-        >
+        <p className="text-sm font-semibold truncate text-text-primary">
           {transaction.desc}
         </p>
-
         <div className="flex items-center gap-2 mt-0.5">
-          <span
-            className="text-[11px]"
-            style={{ color: COLORS.textMuted }}
-          >
+          <span className="text-[11px] text-text-muted">
             {formatDate(transaction.date, 'short')}
           </span>
-
           <span
             className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
-            style={{
-              background: `${catMeta.color}18`,
-              color: catMeta.color,
-            }}
+            style={{ background: `${catMeta.color}18`, color: catMeta.color }}
           >
             {transaction.category}
           </span>
@@ -105,9 +78,7 @@ function TransactionRow({ transaction }) {
 
       <span
         className="font-mono text-sm font-bold flex-shrink-0"
-        style={{
-          color: isIncome ? COLORS.success : COLORS.danger
-        }}
+        style={{ color: isIncome ? COLORS.success : COLORS.danger }}
       >
         {isIncome ? '+' : '−'}
         {formatCurrency(transaction.amount, { compact: true })}
@@ -118,10 +89,7 @@ function TransactionRow({ transaction }) {
           onClick={handleDelete}
           aria-label="Delete transaction"
           className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors flex-shrink-0"
-          style={{
-            background: `${COLORS.danger}15`,
-            color: COLORS.danger
-          }}
+          style={{ background: `${COLORS.danger}15`, color: COLORS.danger }}
         >
           <Trash2 size={13} strokeWidth={2} />
         </button>

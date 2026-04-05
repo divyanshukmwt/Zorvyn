@@ -30,23 +30,15 @@ function StatCard({ icon: Icon, iconBg, iconColor, label, value, change, prefix 
   const displayValue = formatCurrency(animatedValue, { prefix });
 
   const resolvedIconColor = iconColor || COLORS.primary;
-  const resolvedIconBg = iconBg || `${COLORS.primary}20`;
+  const resolvedIconBg    = iconBg    || `${COLORS.primary}20`;
 
   return (
     <div
       ref={cardRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="
-        rounded-card p-6
-        cursor-default transition-colors duration-300
-        relative overflow-hidden
-      "
-      style={{
-        background: COLORS.card,
-        border: `1px solid ${COLORS.border}`,
-        boxShadow: '0 4px 24px rgba(0,0,0,0.2)'
-      }}
+      className="rounded-card p-6 cursor-default transition-colors duration-300 relative overflow-hidden bg-card border border-border-subtle"
+      style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.2)' }}
     >
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
@@ -62,27 +54,16 @@ function StatCard({ icon: Icon, iconBg, iconColor, label, value, change, prefix 
         <Icon size={20} style={{ color: resolvedIconColor }} strokeWidth={2} />
       </div>
 
-      <p
-        className="text-[11px] font-semibold uppercase tracking-widest mb-1.5"
-        style={{ color: COLORS.textMuted }}
-      >
+      <p className="text-[11px] font-semibold uppercase tracking-widest mb-1.5 text-text-muted">
         {label}
       </p>
 
-      <p
-        className="font-bold mb-3 font-mono text-2xl leading-none"
-        style={{ color: COLORS.textPrimary }}
-      >
+      <p className="font-bold mb-3 font-mono text-2xl leading-none text-text-primary">
         {displayValue}
       </p>
 
       <Badge value={change} />
-      <span
-        className="text-[11px] ml-1.5"
-        style={{ color: COLORS.textMuted }}
-      >
-        vs last month
-      </span>
+      <span className="text-[11px] ml-1.5 text-text-muted">vs last month</span>
     </div>
   );
 }

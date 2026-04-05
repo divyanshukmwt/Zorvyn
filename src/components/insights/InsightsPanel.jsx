@@ -31,38 +31,24 @@ function InsightRow({ icon: Icon, iconBg, label, value, sub, index }) {
   return (
     <div
       ref={ref}
-      className="flex items-center gap-3 p-3 rounded-xl mb-2"
-      style={{ background: COLORS.surface, border: `1px solid ${COLORS.border}` }}
+      className="flex items-center gap-3 p-3 rounded-xl mb-2 bg-surface border border-border-subtle"
     >
       <div
         className="w-9 h-9 rounded-[10px] flex items-center justify-center flex-shrink-0"
         style={{ background: iconBg }}
       >
-        <Icon size={15} strokeWidth={2} style={{ color: COLORS.textSecondary }} />
+        <Icon size={15} strokeWidth={2} className="text-text-secondary" />
       </div>
 
       <div className="flex-1 min-w-0">
-        <p
-          className="text-[10px] font-semibold uppercase tracking-widest"
-          style={{ color: COLORS.textMuted }}
-        >
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-text-muted">
           {label}
         </p>
-
-        <p
-          className="text-sm font-bold font-mono mt-0.5 truncate"
-          style={{ color: COLORS.textPrimary }}
-        >
+        <p className="text-sm font-bold font-mono mt-0.5 truncate text-text-primary">
           {value}
         </p>
-
         {sub && (
-          <p
-            className="text-[11px] mt-0.5 truncate"
-            style={{ color: COLORS.textMuted }}
-          >
-            {sub}
-          </p>
+          <p className="text-[11px] mt-0.5 truncate text-text-muted">{sub}</p>
         )}
       </div>
     </div>
@@ -79,32 +65,25 @@ function InsightsPanel() {
     const currTx = getTransactionsByMonth(transactions, current);
     const prevTx = getTransactionsByMonth(transactions, previous);
 
-    const income = getTotalIncome(transactions);
-    const expenses = getTotalExpenses(transactions);
+    const income      = getTotalIncome(transactions);
+    const expenses    = getTotalExpenses(transactions);
     const savingsRate = getSavingsRate(transactions);
-    const avgTx = getAvgTransaction(transactions);
-    const topCat = getTopSpendingCategory(transactions);
+    const avgTx       = getAvgTransaction(transactions);
+    const topCat      = getTopSpendingCategory(transactions);
 
     const currExpenses = getTotalExpenses(currTx);
     const prevExpenses = getTotalExpenses(prevTx);
-    const monthChange = getPercentChange(currExpenses, prevExpenses);
+    const monthChange  = getPercentChange(currExpenses, prevExpenses);
 
     return { income, expenses, savingsRate, avgTx, topCat, monthChange };
   }, [transactions]);
 
   if (!insights) {
     return (
-      <div
-        className="rounded-card p-6"
-        style={{ background: COLORS.card, border: `1px solid ${COLORS.border}` }}
-      >
-        <h2 className="text-sm font-semibold mb-1" style={{ color: COLORS.textPrimary }}>
-          Insights
-        </h2>
-        <p className="text-xs mb-6" style={{ color: COLORS.textMuted }}>
-          Financial health summary
-        </p>
-        <p className="text-sm text-center py-8" style={{ color: COLORS.textMuted }}>
+      <div className="rounded-card p-6 bg-card border border-border-subtle">
+        <h2 className="text-sm font-semibold mb-1 text-text-primary">Insights</h2>
+        <p className="text-xs mb-6 text-text-muted">Financial health summary</p>
+        <p className="text-sm text-center py-8 text-text-muted">
           Add transactions to see insights
         </p>
       </div>
@@ -112,61 +91,54 @@ function InsightsPanel() {
   }
 
   const topCatMeta = insights.topCat ? CATEGORIES[insights.topCat.category] : null;
-  const TopIcon = topCatMeta?.icon || Activity;
+  const TopIcon    = topCatMeta?.icon || Activity;
   const isExpenseUp = insights.monthChange > 0;
 
   const rows = [
     {
-      icon: PiggyBank,
+      icon:   PiggyBank,
       iconBg: `${COLORS.success}20`,
-      label: 'Savings Rate',
-      value: `${insights.savingsRate.toFixed(1)}%`,
-      sub: `Net ₹${((insights.income - insights.expenses) / 100000).toFixed(1)}L saved`,
+      label:  'Savings Rate',
+      value:  `${insights.savingsRate.toFixed(1)}%`,
+      sub:    `Net ₹${((insights.income - insights.expenses) / 100000).toFixed(1)}L saved`,
     },
     {
-      icon: TopIcon,
+      icon:   TopIcon,
       iconBg: `${COLORS.warning}20`,
-      label: 'Top Category',
-      value: insights.topCat ? insights.topCat.category : '—',
-      sub: insights.topCat
+      label:  'Top Category',
+      value:  insights.topCat ? insights.topCat.category : '—',
+      sub:    insights.topCat
         ? formatCurrency(insights.topCat.total, { compact: true }) + ' total spent'
         : '',
     },
     {
-      icon: Activity,
+      icon:   Activity,
       iconBg: `${COLORS.primary}20`,
-      label: 'Avg Transaction',
-      value: formatCurrency(insights.avgTx, { compact: true }),
-      sub: `Across ${transactions.length} transactions`,
+      label:  'Avg Transaction',
+      value:  formatCurrency(insights.avgTx, { compact: true }),
+      sub:    `Across ${transactions.length} transactions`,
     },
     {
-      icon: isExpenseUp ? TrendingUp : TrendingDown,
+      icon:   isExpenseUp ? TrendingUp : TrendingDown,
       iconBg: isExpenseUp ? `${COLORS.danger}20` : `${COLORS.success}20`,
-      label: 'Monthly Change',
-      value: formatPercent(insights.monthChange),
-      sub: `Expenses vs last month`,
+      label:  'Monthly Change',
+      value:  formatPercent(insights.monthChange),
+      sub:    'Expenses vs last month',
     },
     {
-      icon: Activity,
+      icon:   Activity,
       iconBg: `${COLORS.secondary}20`,
-      label: 'Net Balance',
-      value: formatCurrency(insights.income - insights.expenses, { compact: true }),
-      sub: `Income − Expenses`,
+      label:  'Net Balance',
+      value:  formatCurrency(insights.income - insights.expenses, { compact: true }),
+      sub:    'Income − Expenses',
     },
   ];
 
   return (
-    <div
-      className="rounded-card p-6 transition-colors duration-300"
-      style={{ background: COLORS.card, border: `1px solid ${COLORS.border}` }}
-    >
+    <div className="rounded-card p-6 bg-card border border-border-subtle transition-colors duration-300">
       <div className="mb-5">
-        <h2 className="text-sm font-semibold" style={{ color: COLORS.textPrimary }}>
-          Insights
-        </h2>
-        <p className="text-xs mt-0.5" style={{ color: COLORS.textMuted }}>
-          Financial health summary
-        </p>
+        <h2 className="text-sm font-semibold text-text-primary">Insights</h2>
+        <p className="text-xs mt-0.5 text-text-muted">Financial health summary</p>
       </div>
 
       {rows.map((row, i) => (

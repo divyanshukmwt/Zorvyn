@@ -30,55 +30,34 @@ function Header({ onMenuClick, onAddTransaction }) {
   }, [page]);
 
   return (
-    <header
-      className="
-        sticky top-0 z-40
-        px-6 lg:px-8 py-4
-        flex items-center justify-between gap-4
-        transition-colors duration-300
-      "
-      style={{
-        background: COLORS.surface,
-        borderBottom: `1px solid ${COLORS.border}`
-      }}
-    >
-      <div className="flex items-center gap-3 min-w-0">
+    <header className="sticky top-0 z-[300] px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between gap-2 bg-surface border-b border-border-subtle transition-colors duration-300 w-full overflow-hidden">
+
+      <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
         <button
           onClick={onMenuClick}
-          className="lg:hidden flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-colors"
-          style={{
-            background: COLORS.surface,
-            border: `1px solid ${COLORS.border}`,
-            color: COLORS.textSecondary
-          }}
+          className="lg:hidden flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center transition-colors bg-surface border border-border-subtle text-text-secondary"
           aria-label="Open menu"
         >
-          <Menu size={16} />
+          <Menu size={15} />
         </button>
 
         <div ref={titleRef} className="min-w-0">
-          <h1
-            className="text-lg font-bold leading-tight truncate"
-            style={{ color: COLORS.textPrimary }}
-          >
+          <h1 className="text-base sm:text-lg font-bold leading-tight truncate text-text-primary">
             {PAGE_TITLES[page]}
           </h1>
-          <p
-            className="text-xs font-medium hidden sm:block mt-0.5"
-            style={{ color: COLORS.textMuted }}
-          >
+          <p className="text-xs font-medium hidden sm:block mt-0.5 text-text-muted">
             {formatHeaderDate()}
           </p>
         </div>
       </div>
 
-      <div className="flex items-center gap-2.5 flex-shrink-0">
+      <div className="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0">
         <span
-          className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-badge text-xs font-semibold"
+          className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-badge text-xs font-semibold"
           style={{
             background: `${COLORS.primary}15`,
             color: COLORS.primary,
-            border: `1px solid ${COLORS.primary}30`
+            border: `1px solid ${COLORS.primary}30`,
           }}
         >
           {role === 'admin'
@@ -92,23 +71,18 @@ function Header({ onMenuClick, onAddTransaction }) {
         {role === 'admin' && (
           <button
             onClick={onAddTransaction}
-            className="
-              flex items-center gap-2 px-3.5 py-2 rounded-btn
-              text-sm font-semibold
-              hover:opacity-90 active:opacity-80
-              transition-all duration-200
-              shadow-glow
-            "
+            className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-2 rounded-btn text-xs sm:text-sm font-semibold transition-all duration-200 hover:brightness-110 active:brightness-95 flex-shrink-0"
             style={{
-              background: `linear-gradient(to right, ${COLORS.primary}, ${COLORS.secondary})`,
-              color: COLORS.bg
+              background: COLORS.primary,
+              color: 'rgba(255,255,255,0.92)',
             }}
           >
-            <Plus size={15} strokeWidth={2.5} />
+            <Plus size={14} strokeWidth={2.5} />
             <span className="hidden sm:inline">Add</span>
           </button>
         )}
       </div>
+
     </header>
   );
 }

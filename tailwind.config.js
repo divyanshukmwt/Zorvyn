@@ -7,32 +7,34 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg: COLORS.bg,
-        surface: COLORS.surface,
-        card: COLORS.card,
+        // Theme-aware: backed by CSS variables — light/dark respond automatically
+        bg:      'var(--ff-bg)',
+        surface: 'var(--ff-surface)',
+        card:    'var(--ff-card)',
 
+        text: {
+          primary:   'var(--ff-text-primary)',
+          secondary: 'var(--ff-text-secondary)',
+          muted:     'var(--ff-text-muted)',
+        },
+
+        border: {
+          subtle: 'var(--ff-border)',
+        },
+
+        overlay: {
+          light: 'var(--ff-overlay)',
+        },
+
+        // Brand / semantic: static, theme-independent
         accent: {
-          primary: COLORS.primary,
+          primary:   COLORS.primary,
           secondary: COLORS.secondary,
         },
 
         success: COLORS.success,
-        danger: COLORS.danger,
+        danger:  COLORS.danger,
         warning: COLORS.warning,
-
-        text: {
-          primary: COLORS.textPrimary,
-          secondary: COLORS.textSecondary,
-          muted: COLORS.textMuted,
-        },
-
-        border: {
-          subtle: COLORS.border,
-        },
-
-        overlay: {
-          light: COLORS.overlay,
-        },
       },
 
       fontFamily: {

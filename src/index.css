@@ -2,36 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Dark theme */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+/* ─── Dark theme (default) ─────────────────────────────────── */
 :root {
-  --ff-bg:      #0B0D12;
-  --ff-surface: #11131A;
-  --ff-card:    #151821;
+  --ff-bg:             #0B0D12;
+  --ff-surface:        #11131A;
+  --ff-card:           #151821;
 
-  --scrollbar-thumb: rgba(255,255,255,0.12);
+  --ff-text-primary:   #E5E7EB;
+  --ff-text-secondary: #9CA3AF;
+  --ff-text-muted:     #6B7280;
+
+  --ff-border:         rgba(255, 255, 255, 0.06);
+  --ff-overlay:        rgba(255, 255, 255, 0.04);
+
+  --scrollbar-thumb: rgba(255, 255, 255, 0.12);
 }
 
-/* Light theme */
 html:not(.dark) {
-  --ff-bg:      #F7F8FA;
-  --ff-surface: #FFFFFF;
-  --ff-card:    #FFFFFF;
+  --ff-bg: #DCE3EC;
+  --ff-surface: #E5EBF3;
+  --ff-card: #E3E9F1;   /* 👈 FINAL PERFECT VALUE */
 
-  --scrollbar-thumb: rgba(0, 0, 0, 0.2);
-}
+  --ff-text-primary: #0F172A;
+  --ff-text-secondary: #1E293B;
+  --ff-text-muted: #64748B;
 
-/* Light mode text overrides */
-html:not(.dark) .text-slate-100 { color: #0F172A; }
-html:not(.dark) .text-slate-200 { color: #1E293B; }
-html:not(.dark) .text-slate-300 { color: #334155; }
+  --ff-border: rgba(0,0,0,0.08);
+  --ff-overlay: rgba(0,0,0,0.04);
 
-/* Border + overlay */
-html:not(.dark) [class*="border-white"] {
-  border-color: rgba(0, 0, 0, 0.08);
-}
-
-html:not(.dark) [class*="bg-white\/"] {
-  background-color: rgba(0, 0, 0, 0.035);
+  --scrollbar-thumb: rgba(0,0,0,0.25);
 }
 
 @layer base {
@@ -47,11 +55,7 @@ html:not(.dark) [class*="bg-white\/"] {
   body {
     @apply font-sans transition-colors duration-300;
     background-color: var(--ff-bg);
-    color: #E5E7EB;
-  }
-
-  html:not(.dark) body {
-    color: #111827;
+    color: var(--ff-text-primary);
   }
 
   ::-webkit-scrollbar {
@@ -75,6 +79,31 @@ html:not(.dark) [class*="bg-white\/"] {
   html:not(.dark) ::-webkit-scrollbar-thumb:hover {
     background: rgba(0,0,0,0.35);
   }
+}
+/* Remove click focus from recharts SVG */
+.recharts-wrapper svg:focus {
+  outline: none !important;
+}
+
+/* Also remove from all children */
+.recharts-wrapper *:focus {
+  outline: none !important;
+}
+
+.recharts-wrapper {
+  user-select: none;
+}
+
+.recharts-wrapper svg {
+  pointer-events: auto;
+}
+
+.recharts-wrapper svg {
+  outline: none;
+}
+
+.recharts-wrapper svg:focus-visible {
+  outline: none !important;
 }
 
 /* Shimmer animation */
@@ -102,4 +131,10 @@ html:not(.dark) .shimmer-dark {
     #f1f5f9 75%
   );
   background-size: 200% 100%;
+}
+
+@media (max-width: 640px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
 }

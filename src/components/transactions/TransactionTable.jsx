@@ -10,10 +10,10 @@ import { COLORS } from '../../constants/colors';
 
 function TransactionTable() {
   const transactions = useStore((s) => s.transactions);
-  const filters = useStore((s) => s.filters);
-  const setFilter = useStore((s) => s.setFilter);
-  const role = useStore((s) => s.role);
-  const listRef = useRef(null);
+  const filters      = useStore((s) => s.filters);
+  const setFilter    = useStore((s) => s.setFilter);
+  const role         = useStore((s) => s.role);
+  const listRef      = useRef(null);
 
   const clearFilters = () => {
     setFilter('search', '');
@@ -30,19 +30,12 @@ function TransactionTable() {
     if (debouncedSearch) {
       const q = debouncedSearch.toLowerCase();
       result = result.filter(
-        (t) =>
-          t.desc.toLowerCase().includes(q) ||
-          t.category.toLowerCase().includes(q)
+        (t) => t.desc.toLowerCase().includes(q) || t.category.toLowerCase().includes(q)
       );
     }
 
-    if (filters.type !== 'all') {
-      result = result.filter((t) => t.type === filters.type);
-    }
-
-    if (filters.category !== 'all') {
-      result = result.filter((t) => t.category === filters.category);
-    }
+    if (filters.type !== 'all')     result = result.filter((t) => t.type === filters.type);
+    if (filters.category !== 'all') result = result.filter((t) => t.category === filters.category);
 
     if (filters.sort === 'amount') {
       result.sort((a, b) => b.amount - a.amount);
@@ -55,49 +48,30 @@ function TransactionTable() {
 
   useEffect(() => {
     if (!listRef.current) return;
-
     const rows = listRef.current.querySelectorAll('[data-tx-row]');
     if (!rows.length) return;
-
     gsap.fromTo(
       rows,
       { opacity: 0, y: 8 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.3,
-        stagger: 0.04,
-        ease: 'power3.out',
-      }
+      { opacity: 1, y: 0, duration: 0.3, stagger: 0.04, ease: 'power3.out' }
     );
   }, [filtered]);
 
-  const hasNoResults = filtered.length === 0 && transactions.length > 0;
+  const hasNoResults      = filtered.length === 0 && transactions.length > 0;
   const hasNoTransactions = transactions.length === 0;
 
   return (
-    <div
-      className="rounded-card p-6 transition-colors duration-300"
-      style={{
-        background: COLORS.card,
-        border: `1px solid ${COLORS.border}`
-      }}
-    >
+    <div className="rounded-card p-4 sm:p-6 bg-card border border-border-subtle transition-colors duration-300 overflow-x-hidden w-full">
       <div className="mb-5">
-        <h2 className="text-base font-bold" style={{ color: COLORS.textPrimary }}>
-          All Transactions
-        </h2>
-        <p className="text-xs mt-0.5" style={{ color: COLORS.textMuted }}>
+        <h2 className="text-base font-bold text-text-primary">All Transactions</h2>
+        <p className="text-xs mt-0.5 text-text-muted">
           Manage and filter your transaction history
         </p>
       </div>
 
       <TransactionFilters />
 
-      <p
-        className="text-xs mt-3 mb-4"
-        style={{ color: COLORS.textMuted }}
-      >
+      <p className="text-xs mt-3 mb-4 text-text-muted">
         {filtered.length} of {transactions.length} transaction
         {transactions.length !== 1 ? 's' : ''}
       </p>
@@ -109,15 +83,13 @@ function TransactionTable() {
           subtitle="Your transaction history will appear here once you start adding entries."
           action={
             role === 'admin' ? (
-              <span style={{ color: COLORS.textMuted }} className="text-xs">
+              <span className="text-xs text-text-muted">
                 Use the{' '}
-                <span style={{ color: COLORS.primary }} className="font-semibold">
-                  + Add
-                </span>{' '}
-                button above to get started.
+                <span style={{ color: COLORS.primary }} className="font-semibold">+ Add</span>
+                {' '}button above to get started.
               </span>
             ) : (
-              <span style={{ color: COLORS.textMuted }} className="text-xs">
+              <span className="text-xs text-text-muted">
                 Contact an admin to add transactions.
               </span>
             )
@@ -135,7 +107,7 @@ function TransactionTable() {
               style={{
                 background: `${COLORS.primary}15`,
                 color: COLORS.primary,
-                border: `1px solid ${COLORS.primary}30`
+                border: `1px solid ${COLORS.primary}30`,
               }}
             >
               Clear Filters

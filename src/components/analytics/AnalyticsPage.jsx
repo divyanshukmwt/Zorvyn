@@ -16,26 +16,23 @@ import { formatCurrency } from '../../utils/formatters';
 import EmptyState from '../ui/EmptyState';
 import { COLORS } from '../../constants/colors';
 
-const Primary = COLORS.primary;
+const Primary   = COLORS.primary;
 const Secondary = COLORS.secondary;
-const GREEN = COLORS.success;
+const GREEN     = COLORS.success;
 
 function ChartTooltip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
 
   return (
-    <div
-      className="rounded-xl px-4 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
-      style={{ background: COLORS.surface, border: `1px solid ${COLORS.border}` }}
-    >
-      <p className="text-xs font-semibold mb-2" style={{ color: COLORS.textSecondary }}>{label}</p>
+    <div className="rounded-xl px-4 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.5)] bg-surface border border-border-subtle">
+      <p className="text-xs font-semibold mb-2 text-text-secondary">{label}</p>
       {payload.map((p, i) => (
         <div key={i} className="flex items-center justify-between gap-5">
-          <span className="flex items-center gap-1.5 text-xs" style={{ color: COLORS.textSecondary }}>
+          <span className="flex items-center gap-1.5 text-xs text-text-secondary">
             <span className="w-2 h-2 rounded-full" style={{ background: p.color }} />
             {p.name}
           </span>
-          <span className="text-xs font-bold font-mono" style={{ color: COLORS.textPrimary }}>
+          <span className="text-xs font-bold font-mono text-text-primary">
             {formatCurrency(p.value, { compact: true })}
           </span>
         </div>
@@ -44,19 +41,16 @@ function ChartTooltip({ active, payload, label }) {
   );
 }
 
-function SummaryStatBox({ label, value, sub, color = COLORS.textPrimary }) {
+function SummaryStatBox({ label, value, sub, color = 'var(--ff-text-primary)' }) {
   return (
-    <div
-      className="rounded-card p-5 text-center"
-      style={{ background: COLORS.card, border: `1px solid ${COLORS.border}` }}
-    >
-      <p className="text-[11px] font-semibold uppercase tracking-widest mb-2" style={{ color: COLORS.textMuted }}>
+    <div className="rounded-card p-5 text-center bg-card border border-border-subtle">
+      <p className="text-[11px] font-semibold uppercase tracking-widest mb-2 text-text-muted">
         {label}
       </p>
       <p className="text-xl font-bold font-mono" style={{ color }}>
         {value}
       </p>
-      {sub && <p className="text-xs mt-1" style={{ color: COLORS.textMuted }}>{sub}</p>}
+      {sub && <p className="text-xs mt-1 text-text-muted">{sub}</p>}
     </div>
   );
 }
@@ -113,25 +107,19 @@ function AnalyticsPage() {
         />
       </div>
 
-      <div
-        className="rounded-card p-6"
-        style={{ background: COLORS.card, border: `1px solid ${COLORS.border}` }}
-      >
+      {/* Monthly bar chart */}
+      <div className="rounded-card p-6 bg-card border border-border-subtle">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-sm font-semibold" style={{ color: COLORS.textPrimary }}>
-              Monthly Overview
-            </h2>
-            <p className="text-xs mt-0.5" style={{ color: COLORS.textMuted }}>
-              Income vs Expenses — 12 months
-            </p>
+            <h2 className="text-sm font-semibold text-text-primary">Monthly Overview</h2>
+            <p className="text-xs mt-0.5 text-text-muted">Income vs Expenses — 12 months</p>
           </div>
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5 text-xs" style={{ color: COLORS.textSecondary }}>
+            <span className="flex items-center gap-1.5 text-xs text-text-secondary">
               <span className="w-2.5 h-2.5 rounded-full" style={{ background: COLORS.primary }} />
               Income
             </span>
-            <span className="flex items-center gap-1.5 text-xs" style={{ color: COLORS.textSecondary }}>
+            <span className="flex items-center gap-1.5 text-xs text-text-secondary">
               <span className="w-2.5 h-2.5 rounded-full" style={{ background: COLORS.secondary }} />
               Expenses
             </span>
@@ -140,26 +128,22 @@ function AnalyticsPage() {
 
         <ResponsiveContainer width="100%" height={240}>
           <BarChart data={MONTHLY_SUMMARY} margin={{ top: 5, right: 5, left: -15, bottom: 0 }} barGap={4}>
-            <CartesianGrid strokeDasharray="3 3" stroke={COLORS.border} vertical={false} />
-            <XAxis dataKey="month" tick={{ fill: COLORS.textSecondary, fontSize: 11 }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fill: COLORS.textSecondary, fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v / 1000}K`} />
-            <Tooltip content={<ChartTooltip />} cursor={{ fill: COLORS.overlay }} />
-            <Bar dataKey="income" name="Income" fill={Primary} fillOpacity={0.8} radius={[4, 4, 0, 0]} animationDuration={900} />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--ff-border)" vertical={false} />
+            <XAxis dataKey="month" tick={{ fill: 'var(--ff-text-secondary)', fontSize: 11 }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fill: 'var(--ff-text-secondary)', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v / 1000}K`} />
+            <Tooltip content={<ChartTooltip />} cursor={{ fill: 'var(--ff-overlay)' }} />
+            <Bar dataKey="income"   name="Income"   fill={Primary}   fillOpacity={0.8} radius={[4, 4, 0, 0]} animationDuration={900} />
             <Bar dataKey="expenses" name="Expenses" fill={Secondary} fillOpacity={0.8} radius={[4, 4, 0, 0]} animationDuration={900} />
           </BarChart>
         </ResponsiveContainer>
       </div>
 
       <div className="space-y-6">
-
-        <div className="rounded-card p-6" style={{ background: COLORS.card, border: `1px solid ${COLORS.border}` }}>
-          <h2 className="text-sm font-semibold mb-4" style={{ color: COLORS.textPrimary }}>
-            Spending by Category
-          </h2>
+        {/* Pie chart + legend */}
+        <div className="rounded-card p-6 bg-card border border-border-subtle">
+          <h2 className="text-sm font-semibold mb-4 text-text-primary">Spending by Category</h2>
 
           <div className="flex flex-col sm:flex-row items-center gap-6">
-
-            {/* PIE CHART */}
             <div className="w-full sm:w-[50%] h-[240px] sm:h-[260px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -179,12 +163,11 @@ function AnalyticsPage() {
                   >
                     {categoryData.map((entry, index) => {
                       const isActive = index === activeIndex;
-
                       return (
                         <Cell
                           key={index}
                           fill={CATEGORIES[entry.category]?.color || Secondary}
-                          stroke={isActive ? COLORS.textPrimary : 'none'}
+                          stroke={isActive ? 'var(--ff-text-primary)' : 'none'}
                           strokeWidth={isActive ? 2 : 0}
                           style={{
                             opacity: activeIndex === null || isActive ? 1 : 0.4,
@@ -199,11 +182,9 @@ function AnalyticsPage() {
               </ResponsiveContainer>
             </div>
 
-            {/* LEGEND */}
             <div className="w-full sm:flex-1 space-y-3">
               {categoryData.map((entry, index) => {
                 const isActive = index === activeIndex;
-
                 return (
                   <div
                     key={index}
@@ -211,7 +192,7 @@ function AnalyticsPage() {
                     onMouseLeave={() => setActiveIndex(null)}
                     className="flex items-center justify-between px-2 py-1 rounded-md transition-colors duration-150"
                     style={{
-                      background: isActive ? COLORS.overlay : 'transparent',
+                      background: isActive ? 'var(--ff-overlay)' : 'transparent',
                       cursor: 'pointer',
                     }}
                   >
@@ -227,18 +208,17 @@ function AnalyticsPage() {
                       <span
                         className="text-xs"
                         style={{
-                          color: isActive ? COLORS.textPrimary : COLORS.textSecondary,
+                          color: isActive ? 'var(--ff-text-primary)' : 'var(--ff-text-secondary)',
                           fontWeight: isActive ? 600 : 400,
                         }}
                       >
                         {entry.category}
                       </span>
                     </div>
-
                     <span
                       className="text-xs font-semibold font-mono"
                       style={{
-                        color: COLORS.textPrimary,
+                        color: 'var(--ff-text-primary)',
                         opacity: isActive ? 1 : 0.8,
                       }}
                     >
@@ -248,23 +228,19 @@ function AnalyticsPage() {
                 );
               })}
             </div>
-
           </div>
         </div>
 
-        {/* Savings Trend */}
-        <div className="rounded-card p-6" style={{ background: COLORS.card, border: `1px solid ${COLORS.border}` }}>
-          <h2 className="text-sm font-semibold mb-1" style={{ color: COLORS.textPrimary }}>
-            Savings Trend
-          </h2>
+        {/* Savings trend */}
+        <div className="rounded-card p-6 bg-card border border-border-subtle">
+          <h2 className="text-sm font-semibold mb-1 text-text-primary">Savings Trend</h2>
 
           <ResponsiveContainer width="100%" height={260}>
             <LineChart data={savingsTrend}>
-              <CartesianGrid strokeDasharray="3 3" stroke={COLORS.border} />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip content={<ChartTooltip />} cursor={{ fill: COLORS.overlay }} />
-
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--ff-border)" />
+              <XAxis dataKey="month" tick={{ fill: 'var(--ff-text-secondary)', fontSize: 11 }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fill: 'var(--ff-text-secondary)', fontSize: 10 }} axisLine={false} tickLine={false} />
+              <Tooltip content={<ChartTooltip />} cursor={{ fill: 'var(--ff-overlay)' }} />
               <Line
                 type="monotone"
                 dataKey="savings"
@@ -276,7 +252,6 @@ function AnalyticsPage() {
             </LineChart>
           </ResponsiveContainer>
         </div>
-
       </div>
     </div>
   );
